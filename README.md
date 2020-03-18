@@ -1,4 +1,5 @@
-# AminoGo
+# AminoGo [![GoDoc](https://godoc.org/github.com/AminoJS/AminoGo/aminogo?status.svg)](https://godoc.org/github.com/AminoJS/AminoGo/aminogo)
+
 
 👷This package is still under heavy development, so please use with caution ⚠️
 
