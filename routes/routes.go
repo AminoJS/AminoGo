@@ -15,3 +15,7 @@ func MyProfile() string {
 func JoinedCommunities(start int, size int) string {
 	return fmt.Sprintf("%s/api/v1/g/s/community/joined?start=%d&size=%d", ENDPOINT, start, size)
 }
+
+func UploadMedia() string {
+	return fmt.Sprintf("%s/api/v1/g/s/media/upload", ENDPOINT)
+}
