@@ -125,3 +125,11 @@ type JoinedCommunities struct {
 	APIDuration   string    `json:"api:duration"`
 	APITimestamp  time.Time `json:"api:timestamp"`
 }
+
+type UploadedMedia struct {
+	APIStatuscode int       `json:"api:statuscode"`
+	APIDuration   string    `json:"api:duration"`
+	APIMessage    string    `json:"api:message"`
+	MediaValue    string    `json:"mediaValue"`
+	APITimestamp  time.Time `json:"api:timestamp"`
+}
