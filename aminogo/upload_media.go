@@ -14,7 +14,7 @@ import (
 	"path"
 )
 
-type MediaContainer struct {
+type mediaContainer struct {
 	// The URL of the tagged source
 	DES string
 	// Flag for IDing the source file whether it is a local file or a remote one
@@ -46,6 +46,7 @@ func getLocalFileContent(filePath string) (file interface{}, err error) {
 	return file, nil
 }
 
+// Upload a remote resource or a local binary file
 func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 
 	SID := stores.Get("SID")
@@ -59,7 +60,7 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 		fmt.Printf("[upload_media.go] [DEBUG] DES: %s\n", des)
 	}
 
-	desContainer := MediaContainer{
+	desContainer := mediaContainer{
 		DES:              des,
 		IsRemoteResource: isValidUrl(des),
 	}
