@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/stores"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -19,7 +20,7 @@ var (
 
 // Get authorize, and returns a session token
 func Login(email string, password string) error {
-	var endpoint = routes.GetRoutes()["Login"]
+
 	// Create a new map for the post body
 
 	postAuthBody := make(map[string]interface{})
@@ -34,7 +35,7 @@ func Login(email string, password string) error {
 	jStr, _ := json.Marshal(postAuthBody)
 	data := bytes.NewReader(jStr)
 
-	res, err := http.Post(endpoint, "application/json", data)
+	res, err := http.Post(routes.Login(), "application/json", data)
 	defer res.Body.Close()
 	if err != nil {
 		return err
@@ -53,5 +54,10 @@ func Login(email string, password string) error {
 
 	SID := bodyMap["sid"].(string)
 	stores.Set("SID", SID)
+
+	if os.Getenv("GO_DEBUG") == "true" {
+		fmt.Printf("[login.go][DEBUG] SID: %s\n", SID)
+	}
+
 	return nil
 }
