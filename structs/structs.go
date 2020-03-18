@@ -2,9 +2,7 @@ package structs
 
 import "time"
 
-var ENDPOINT string = "https://service.narvii.com/"
-
-// All structs are generated using https://mholt.github.io/json-to-go/
+// All struct are generated using https://mholt.github.io/json-to-go/
 
 type MyProfile struct {
 	APIStatuscode int `json:"api:statuscode"`
