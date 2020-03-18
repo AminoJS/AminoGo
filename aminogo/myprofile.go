@@ -1,9 +1,9 @@
 package aminogo
 
 import (
-	"AminoJS/AminoGo/routes"
-	"AminoJS/AminoGo/stores"
-	"AminoJS/AminoGo/structs"
+	"github.com/AminoJS/AminoGo/routes"
+	"github.com/AminoJS/AminoGo/stores"
+	"github.com/AminoJS/AminoGo/structs"
 	"encoding/json"
 	"errors"
 	"fmt"
