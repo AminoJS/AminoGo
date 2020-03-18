@@ -12,14 +12,14 @@ import (
 )
 
 var (
-	deviceID   string = "015051B67B8D59D0A86E0F4A78F47367B749357048DD5F23DF275F05016B74605AAB0D7A6127287D9C"
-	clientType int8   = 100
-	action     string = "normal"
+	deviceID        = "015051B67B8D59D0A86E0F4A78F47367B749357048DD5F23DF275F05016B74605AAB0D7A6127287D9C"
+	clientType int8 = 100
+	action          = "normal"
 )
 
 // Get authorize, and returns a session token
 func Login(email string, password string) error {
-	var endpoint string = routes.GetRoutes()["Login"]
+	var endpoint = routes.GetRoutes()["Login"]
 	// Create a new map for the post body
 
 	postAuthBody := make(map[string]interface{})

@@ -2,7 +2,7 @@ package routes
 
 import "fmt"
 
-var ENDPOINT string = "https://service.narvii.com/"
+var ENDPOINT = "https://service.narvii.com/"
 
 func GetRoutes() map[string]string {
 	routes := map[string]string{
