@@ -1,12 +1,13 @@
 package main
 
 import (
-	"AminoJS/AminoGo/aminogo"
 	"fmt"
+	"github.com/AminoJS/AminoGo/aminogo"
+	"os"
 )
 
 func main() {
-	err := aminogo.Login("USERNAME", "PASSWORD")
+	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
 	if err != nil {
 		fmt.Println(err)
 		return
