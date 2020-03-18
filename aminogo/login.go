@@ -1,11 +1,11 @@
 package aminogo
 
 import (
-	"AminoJS/AminoGo/routes"
-	"AminoJS/AminoGo/stores"
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/AminoJS/AminoGo/routes"
+	"github.com/AminoJS/AminoGo/stores"
 	"io/ioutil"
 	"net/http"
 	"time"
