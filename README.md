@@ -11,7 +11,7 @@ AminoGo is a Go package for access to the Narvii/Amino API.
 
 Install this library is easy as
 ```
-$ go get github.com/AminoJS/AminoGo
+$ go get github.com/AminoJS/AminoGo/aminogo
 ```
 
 Or simply by cloning this repo
