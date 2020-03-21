@@ -28,7 +28,7 @@ import (
 
 # Examples
 
-For more examples and details use case, you can browse the [example.go](example.go) file
+For more examples and details use case, you can browse the [examples directory](examples/) file
 
 # Docs
 
