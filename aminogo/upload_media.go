@@ -6,6 +6,7 @@ import (
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
+	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
 	"net/http"
 	"net/url"
@@ -53,9 +54,7 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 		return structs.UploadedMedia{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
-	if os.Getenv("GO_DEBUG") == "true" {
-		fmt.Printf("[upload_media.go] [DEBUG] DES: %s\n", des)
-	}
+	utils.DebugLog("upload_media.go", fmt.Sprintf("DES: %s", des))
 
 	desContainer := mediaContainer{
 		DES:              des,
@@ -73,9 +72,7 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 	// Handle remote content
 	if desContainer.IsRemoteResource == true {
 
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Grepping REMOTE resource")
-		}
+		utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
 
 		desRes, err := http.Get(des)
 		defer desRes.Body.Close()
@@ -83,17 +80,13 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 			return structs.UploadedMedia{}, err
 		}
 		uploadContent = desRes.Body
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Done grepping REMOTE resource")
-		}
+		utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
 	}
 
 	// Handle local content
 	if desContainer.IsRemoteResource == false {
 
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Grepping LOCAL resource")
-		}
+		utils.DebugLog("upload_media.go", "Grepping LOCAL resource")
 
 		isAbso := path.IsAbs(desContainer.DES)
 
@@ -106,9 +99,7 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 			return structs.UploadedMedia{}, err
 		}
 		uploadContent = file
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Done grepping LOCAL resource")
-		}
+		utils.DebugLog("upload_media.go", "Done grepping LOCAL resource")
 	}
 
 	res, err := req.Post(endpoint, header, uploadContent)

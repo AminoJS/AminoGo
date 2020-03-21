@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
+	"github.com/AminoJS/AminoGo/utils"
 	"io/ioutil"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -55,9 +55,7 @@ func Login(email string, password string) error {
 	SID := bodyMap["sid"].(string)
 	stores.Set("SID", SID)
 
-	if os.Getenv("GO_DEBUG") == "true" {
-		fmt.Printf("[login.go][DEBUG] SID: %s\n", SID)
-	}
+	utils.DebugLog("login.go", fmt.Sprintf("SID %s", SID))
 
 	return nil
 }
