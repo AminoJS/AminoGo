@@ -7,7 +7,6 @@ import (
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/imroc/req"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -53,8 +52,6 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 	if SID == nil {
 		return structs.UploadedMedia{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
-
-	log.Print(isValidUrl(des))
 
 	if os.Getenv("GO_DEBUG") == "true" {
 		fmt.Printf("[upload_media.go] [DEBUG] DES: %s\n", des)
