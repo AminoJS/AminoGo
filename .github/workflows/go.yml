@@ -34,4 +34,4 @@ jobs:
       env:
         AMINO_USERNAME: ${{secrets.AMINO_USERNAME}}
         AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
-      run: go test github.com/AminoJS/AminoGo/aminogo
+      run: go test -i github.com/AminoJS/AminoGo/aminogo
