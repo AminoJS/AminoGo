@@ -3,6 +3,7 @@ package aminogo
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
@@ -20,6 +21,14 @@ var (
 
 // Get authorize, and returns a session token
 func Login(email string, password string) error {
+
+	if email == "" {
+		return errors.New("email address MUST be provided as a argument of this function call")
+	}
+
+	if password == "" {
+		return errors.New("password MUST be provided as a argument of this function call")
+	}
 
 	// Create a new map for the post body
 
