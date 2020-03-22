@@ -43,6 +43,11 @@ func TestUUID(t *testing.T) {
 		t.Errorf("Environment variable AMINO_PASSWORD is missing")
 	}
 
+	if os.Getenv("CI") == "true" {
+		t.Logf("USERNAME: %s", username[1-2])
+		t.Logf("PASSWORD: %s", password[1-2])
+	}
+
 	err := Login(username, password)
 	if err != nil {
 		t.Error(err)
