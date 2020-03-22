@@ -30,7 +30,20 @@ func TestEmptyAllField(t *testing.T) {
 
 func TestUUID(t *testing.T) {
 
-	err := Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
+	username := os.Getenv("AMINO_USERNAME")
+	password := os.Getenv("AMINO_PASSWORD")
+
+	// Check if environment variable exits
+
+	if username == "" {
+		t.Errorf("Environment variable AMINO_USERNAME is missing")
+	}
+
+	if password == "" {
+		t.Errorf("Environment variable AMINO_PASSWORD is missing")
+	}
+
+	err := Login(username, password)
 	if err != nil {
 		t.Error(err)
 	}
