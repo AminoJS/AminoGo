@@ -30,5 +30,8 @@ jobs:
             dep ensure
         fi
 
-    - name: Build
-      run: go build -v .
+    - name: Test
+      env:
+        AMINO_USERNAME: ${{secrets.AMINO_USERNAME}}
+        AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
+      run: go test aminogo
