@@ -23,3 +23,7 @@ func UploadMedia() string {
 func GetCommunityBlogs(communityID int, start int, size int) string {
 	return fmt.Sprintf("%s/api/v1/x%d/s/feed/blog-all?pagingType=t&start=%d&size=%d", ENDPOINT, communityID, start, size)
 }
+
+func GetJoinedChatrooms(communityID int, start int, size int) string {
+	return fmt.Sprintf("%s/api/v1/x%d/s/chat/thread?type=joined-me&start=%d&size=%d", ENDPOINT, communityID, start, size)
+}
