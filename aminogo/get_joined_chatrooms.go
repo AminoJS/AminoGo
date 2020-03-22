@@ -16,6 +16,7 @@ type GetJoinedChatroomsOptions struct {
 	Size        int
 }
 
+// Get a list of joined chat rooms based ona selected community
 func GetJoinedChatrooms(argument *GetJoinedChatroomsOptions) (joinedChatrooms *structs.JoinedChatrooms, err error) {
 	SID := stores.Get("SID")
 	if SID == nil {

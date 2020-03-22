@@ -16,6 +16,7 @@ type GetJoinedCommunitiesOptions struct {
 	Size  int
 }
 
+// Get a list of user's joined communities
 func GetJoinedCommunities(argument *GetJoinedCommunitiesOptions) (joinedCommunities *structs.JoinedCommunities, err error) {
 	SID := stores.Get("SID")
 	if SID == nil {
