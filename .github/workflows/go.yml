@@ -8,8 +8,7 @@ on:
 
 jobs:
 
-  build:
-    name: Build
+  test:
     runs-on: ubuntu-latest
     steps:
 
@@ -34,4 +33,4 @@ jobs:
       env:
         AMINO_USERNAME: ${{secrets.AMINO_USERNAME}}
         AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
-      run: go test aminogo
+      run: go test github.com/AminoJS/AminoGo/aminogo
