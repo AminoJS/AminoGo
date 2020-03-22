@@ -44,8 +44,8 @@ func TestUUID(t *testing.T) {
 	}
 
 	if os.Getenv("CI") == "true" {
-		t.Logf("USERNAME: %s", username[1-2])
-		t.Logf("PASSWORD: %s", password[1-2])
+		t.Logf("USERNAME: %s", username[0:2])
+		t.Logf("PASSWORD: %s", password[0:2])
 	}
 
 	err := Login(username, password)
