@@ -2,7 +2,7 @@ package routes
 
 import "fmt"
 
-var ENDPOINT = "https://service.narvii.com/"
+var ENDPOINT = "https://service.narvii.com"
 
 func Login() string {
 	return fmt.Sprintf("%s/api/v1/g/s/auth/login", ENDPOINT)
@@ -26,4 +26,8 @@ func GetCommunityBlogs(communityID int, start int, size int) string {
 
 func GetJoinedChatrooms(communityID int, start int, size int) string {
 	return fmt.Sprintf("%s/api/v1/x%d/s/chat/thread?type=joined-me&start=%d&size=%d", ENDPOINT, communityID, start, size)
+}
+
+func GetUserBlogsFromCommunity(communityID int, UUID string, start int, size int) string {
+	return fmt.Sprintf("%s/api/v1/x%d/s/blog?type=user&q=%s&start=%d&size=%d", ENDPOINT, communityID, UUID, start, size)
 }
