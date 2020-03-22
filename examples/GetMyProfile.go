@@ -17,5 +17,5 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(myProfile.Account.Nickname)
+	fmt.Println(myProfile.Account.UID)
 }
