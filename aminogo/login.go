@@ -61,6 +61,10 @@ func Login(email string, password string) error {
 		return err
 	}
 
+	if res.StatusCode != 200 {
+		return errors.New(fmt.Sprintf("Fail to login API call, resulted in a none 200 status code; Raw HTTP output:\n%s", body))
+	}
+
 	SID := bodyMap["sid"].(string)
 	stores.Set("SID", SID)
 
