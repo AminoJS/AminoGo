@@ -29,9 +29,10 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+        go mod download
 
     - name: Test
       env:
         AMINO_USERNAME: ${{secrets.AMINO_USERNAME}}
         AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
-      run: go test -i github.com/AminoJS/AminoGo/aminogo
+      run: go test github.com/AminoJS/AminoGo/aminogo
