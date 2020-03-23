@@ -29,6 +29,10 @@ func GetBlogFeed(communityID int, start int, size int) (blogsFeed *structs.Commu
 	if err != nil {
 		return &structs.CommunityBlogsFeed{}, err
 	}
+	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	if err != nil {
+		return &structs.CommunityBlogsFeed{}, err
+	}
 
 	resMap := structs.CommunityBlogsFeed{}
 	err = res.ToJSON(&resMap)

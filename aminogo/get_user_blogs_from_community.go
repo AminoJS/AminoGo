@@ -36,6 +36,10 @@ func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *
 	if err != nil {
 		return &structs.GetUserBlogsFromCommunity{}, err
 	}
+	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	if err != nil {
+		return &structs.GetUserBlogsFromCommunity{}, err
+	}
 
 	resMap := structs.GetUserBlogsFromCommunity{}
 	err = res.ToJSON(&resMap)

@@ -106,6 +106,10 @@ func UploadMedia(des string) (media *structs.UploadedMedia, err error) {
 	if err != nil {
 		return &structs.UploadedMedia{}, err
 	}
+	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	if err != nil {
+		return &structs.UploadedMedia{}, err
+	}
 
 	resMap := &structs.UploadedMedia{}
 	err = res.ToJSON(&resMap)

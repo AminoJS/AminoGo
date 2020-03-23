@@ -43,6 +43,10 @@ func GetJoinedCommunities(argument *GetJoinedCommunitiesOptions) (joinedCommunit
 	if err != nil {
 		return &structs.JoinedCommunities{}, err
 	}
+	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	if err != nil {
+		return &structs.JoinedCommunities{}, err
+	}
 
 	return &resMap, nil
 
