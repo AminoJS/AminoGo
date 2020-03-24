@@ -6,13 +6,13 @@ import (
 )
 
 // Return a error message for some common HTTP error with some tips
-func ThrowHttpErrorIfFail(status_code int) (err error) {
+func ThrowHttpErrorIfFail(statusCode int) (err error) {
 
-	if status_code == 0 {
+	if statusCode == 0 {
 		return errors.New("empty or 0 HTTP status is not allowed")
 	}
 
-	switch status_code {
+	switch statusCode {
 	case 404:
 		return errors.New("fail to login API call due to resource not found, resulted in a none 404 status code")
 	case 400:
@@ -24,8 +24,8 @@ func ThrowHttpErrorIfFail(status_code int) (err error) {
 	case 500:
 		return errors.New("fail to login API call due to internal server error(not your fault), resulted in a none 500 status code")
 	}
-	if status_code != 200 && status_code != 201 {
-		return errors.New(fmt.Sprintf("fail to login API call, resulted in a none %d status code", status_code))
+	if statusCode != 200 && statusCode != 201 {
+		return errors.New(fmt.Sprintf("fail to login API call, resulted in a none %d status code", statusCode))
 	}
 	return nil
 }
