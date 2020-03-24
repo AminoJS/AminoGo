@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func DebugLog(file_name string, msg interface{}) {
+func DebugLog(fileName string, msg interface{}) {
 	if os.Getenv("GO_DEBUG") == "true" {
-		fmt.Printf("[%s] [DEBUG] %s\n", file_name, msg)
+		fmt.Printf("[%s] [DEBUG] %s\n", fileName, msg)
 	}
 }
