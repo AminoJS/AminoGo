@@ -28,6 +28,13 @@ func TestEmptyAllField(t *testing.T) {
 	}
 }
 
+func TestRequestProfileBeforeLogin(t *testing.T) {
+	_, err := MyProfile()
+	if err == nil {
+		t.Error("There should be a error since we have obtain a session token yet")
+	}
+}
+
 func TestUUID(t *testing.T) {
 
 	username := os.Getenv("AMINO_USERNAME")
