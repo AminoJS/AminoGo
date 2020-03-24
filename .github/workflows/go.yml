@@ -60,7 +60,7 @@ jobs:
               dep ensure
           fi
           go mod download
-          curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $GOPATH/bin vX.Y.Z
+          curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sh -s -- -b $GOPATH/bin latest
 
       - name: Security Checks
         env:
