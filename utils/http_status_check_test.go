@@ -59,7 +59,7 @@ func TestBadRequest(t *testing.T) {
 	}
 }
 
-func TestMethodNotAlloed(t *testing.T) {
+func MethodNotAllowed(t *testing.T) {
 	code := 405
 	expectErr := errors.New("fail to login API call due to bad method not allowed (there must be a bug in AminoGo, please ensure AminoGo are update-to-date, if you are on the latest version, please repo this on GitHub at https://github.com/AminoJS/AminoGo/issues), resulted in a none 400 status code")
 	err := ThrowHttpErrorIfFail(code)
