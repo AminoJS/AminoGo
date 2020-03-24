@@ -68,9 +68,9 @@ func TestUUID(t *testing.T) {
 
 	UUID := myProfile.Account.UID
 
-	spliited := strings.Split(UUID, "-")
+	slitted := strings.Split(UUID, "-")
 
-	if len(spliited) != 5 {
+	if len(slitted) != 5 {
 		t.Errorf("UUID is malformed,\nExpect format: XXX-XXX-XXX-XXX-XXX (splited with - and a set of 5 sets)\n Got: %v", UUID)
 	}
 }

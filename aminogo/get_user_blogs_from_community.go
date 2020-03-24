@@ -17,7 +17,7 @@ type GetUserBlogFromComOptions struct {
 	Size        int
 }
 
-// Get a list of bloggs that are written from a selected users from a selected community
+// Get a list of blogs that are written from a selected users from a selected community
 func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *structs.GetUserBlogsFromCommunity, err error) {
 	SID := stores.Get("SID")
 	if SID == nil {
