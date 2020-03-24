@@ -1,6 +1,7 @@
-package aminogo
+package test
 
 import (
+	"github.com/AminoJS/AminoGo/aminogo"
 	"github.com/AminoJS/AminoGo/structs"
 	"os"
 	"strings"
@@ -8,28 +9,28 @@ import (
 )
 
 func TestEmptyEmailAddress(t *testing.T) {
-	err := Login("", "PWD")
+	err := aminogo.Login("", "PWD")
 	if err == nil {
 		t.Errorf("Fail to optain a session-token, error are following:\n%v", err)
 	}
 }
 
 func TestEmptyPassword(t *testing.T) {
-	err := Login("EMAIL", "")
+	err := aminogo.Login("EMAIL", "")
 	if err == nil {
 		t.Error("Fail to check a empty password, might lead to nil pointer exception")
 	}
 }
 
 func TestEmptyAllField(t *testing.T) {
-	err := Login("", "")
+	err := aminogo.Login("", "")
 	if err == nil {
 		t.Error("Fail to check both empty password and email address, might lead to nil pointer exception")
 	}
 }
 
 func TestRequestProfileBeforeLogin(t *testing.T) {
-	_, err := MyProfile()
+	_, err := aminogo.MyProfile()
 	if err == nil {
 		t.Error("There should be a error since we have obtain a session token yet")
 	}
@@ -50,12 +51,12 @@ func TestUUID(t *testing.T) {
 		t.Errorf("Environment variable AMINO_PASSWORD is missing")
 	}
 
-	err := Login(username, password)
+	err := aminogo.Login(username, password)
 	if err != nil {
 		t.Error(err)
 	}
 
-	myProfile, err := MyProfile()
+	myProfile, err := aminogo.MyProfile()
 	if err != nil {
 		t.Error(err)
 	}
