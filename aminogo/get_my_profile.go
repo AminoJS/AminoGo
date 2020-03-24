@@ -28,10 +28,10 @@ func MyProfile() (profile *structs.MyProfile, err error) {
 	req.Header.Add("NDCAUTH", fmt.Sprintf("sid=%s", SID))
 	client := &http.Client{Timeout: time.Second * 10}
 	res, err := client.Do(req)
-	defer res.Body.Close()
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}
+	defer res.Body.Close()
 	err = utils.ThrowHttpErrorIfFail(res.StatusCode)
 	if err != nil {
 		return &structs.MyProfile{}, err
