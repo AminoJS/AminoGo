@@ -45,10 +45,10 @@ func Login(email string, password string) error {
 	data := bytes.NewReader(jStr)
 
 	res, err := http.Post(routes.Login(), "application/json", data)
-	defer res.Body.Close()
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
