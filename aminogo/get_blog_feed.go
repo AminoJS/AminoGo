@@ -10,7 +10,7 @@ import (
 	"github.com/imroc/req"
 )
 
-// Get a list of bloggs from a targeted community
+// Get a list of blogs from a targeted community
 func GetBlogFeed(communityID int, start int, size int) (blogsFeed *structs.CommunityBlogsFeed, err error) {
 	SID := stores.Get("SID")
 	if SID == nil {
