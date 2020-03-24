@@ -65,26 +65,39 @@ func UploadMedia(des string) (media *structs.UploadedMedia, err error) {
 
 	endpoint := routes.UploadMedia()
 
+	var uploadContent interface{}
+	var doneUploading chan bool
+
+	if desContainer.IsRemoteResource == false {
+		a, s, err3 := uploadLocalFile(desContainer, uploadContent)
+		if err3 != nil {
+			return s, err3
+		}
+		uploadContent = a
+	}
+
+	if desContainer.IsRemoteResource == true {
+		a, uploadedMedia, err2, d := uploadRemoteFile(des, uploadContent)
+		if err2 != nil {
+			return uploadedMedia, err2
+		}
+		uploadContent = a
+		doneUploading = d
+	}
+
 	header := req.Header{
 		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
 	}
-
-	var uploadContent interface{}
-
-	uploadContent, uploadedMedia, err2 := uploadRemoteFile(desContainer, des, uploadContent)
-	if err2 != nil {
-		return uploadedMedia, err2
-	}
-
-	uploadContent, s, err3 := uploadLocalFile(desContainer, uploadContent)
-	if err3 != nil {
-		return s, err3
-	}
-
 	res, err := req.Post(endpoint, header, uploadContent)
 	if err != nil {
 		return &structs.UploadedMedia{}, err
 	}
+
+	// Telling the remote upload function it's done uploading, it's time to close out that precious HTTP connection
+	if desContainer.IsRemoteResource {
+		doneUploading <- true
+	}
+
 	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
 	if err != nil {
 		return &structs.UploadedMedia{}, err
@@ -97,91 +110,100 @@ func UploadMedia(des string) (media *structs.UploadedMedia, err error) {
 	}
 
 	return resMap, nil
-
 }
 
 func uploadLocalFile(desContainer mediaContainer, uploadContent interface{}) (interface{}, *structs.UploadedMedia, error) {
 	// Handle local content
-	if desContainer.IsRemoteResource == false {
 
-		utils.DebugLog("upload_media.go", "Grepping LOCAL resource")
+	utils.DebugLog("upload_media.go", "Grepping LOCAL resource")
 
-		// Check if a selected file are larger then 6MB
-		localFile, err := os.Open(desContainer.DES)
+	isAbso := path.IsAbs(desContainer.DES)
+
+	if isAbso == false {
+		// Try to convert a relative path to a absolute path
+		desAbs, err := filepath.Abs(desContainer.DES)
 		if err != nil {
 			return nil, &structs.UploadedMedia{}, err
 		}
-		defer localFile.Close()
-
-		fileInfo, err := localFile.Stat()
-		if err != nil {
-			return nil, &structs.UploadedMedia{}, err
-		}
-
-		var MaxFileSize int64 = 6000000
-
-		if fileInfo.Size() > MaxFileSize {
-			return nil, &structs.UploadedMedia{}, errors.New("file too large, Amino doesn't allow file size that are larger then 6MB")
-		}
-
-		// Check if file are 0 bytes
-
-		if fileInfo.Size() == 0 {
-			return nil, &structs.UploadedMedia{}, errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server")
-		}
-
-		isAbso := path.IsAbs(desContainer.DES)
-
-		if isAbso == false {
-			// Try to convert a relative path to a absolute path
-			desAbs, err := filepath.Abs(desContainer.DES)
-			if err != nil {
-				return nil, &structs.UploadedMedia{}, err
-			}
-			desContainer.DES = desAbs
-		}
-
-		file, err := getLocalFileContent(desContainer.DES)
-		if err != nil {
-			return nil, &structs.UploadedMedia{}, err
-		}
-		uploadContent = file
-		utils.DebugLog("upload_media.go", "Done grepping LOCAL resource")
+		desContainer.DES = desAbs
 	}
+
+	// Check if a selected file are larger then 6MB
+	localFile, err := os.Open(desContainer.DES)
+	if err != nil {
+		return nil, &structs.UploadedMedia{}, err
+	}
+	defer localFile.Close()
+
+	fileInfo, err := localFile.Stat()
+	if err != nil {
+		return nil, &structs.UploadedMedia{}, err
+	}
+
+	var MaxFileSize int64 = 6000000
+
+	if fileInfo.Size() > MaxFileSize {
+		return nil, &structs.UploadedMedia{}, errors.New("file too large, Amino doesn't allow file size that are larger then 6MB")
+	}
+
+	// Check if file are 0 bytes
+
+	if fileInfo.Size() == 0 {
+		return nil, &structs.UploadedMedia{}, errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server")
+	}
+
+	file, err := getLocalFileContent(desContainer.DES)
+	if err != nil {
+		return nil, &structs.UploadedMedia{}, err
+	}
+	uploadContent = file
+	utils.DebugLog("upload_media.go", "Done grepping LOCAL resource")
+
 	return uploadContent, nil, nil
 }
 
-func uploadRemoteFile(desContainer mediaContainer, des string, uploadContent interface{}) (interface{}, *structs.UploadedMedia, error) {
+func uploadRemoteFile(des string, uploadContent interface{}) (interface{}, *structs.UploadedMedia, error, chan bool) {
 	// Handle remote content
-	if desContainer.IsRemoteResource == true {
 
-		utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
+	doneUploading := make(chan bool)
 
-		desRes, err := http.Get(des)
-		defer desRes.Body.Close()
-		if err != nil {
-			return nil, &structs.UploadedMedia{}, err
-		}
+	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
 
-		var MaxFileSize = 6000000
-
-		// Check if a selected file are larger then 6MB
-		clHeader := desRes.Header.Get("Content-Length")
-		clHeaderInt, err := strconv.Atoi(clHeader)
-		if err != nil {
-			return nil, &structs.UploadedMedia{}, err
-		}
-		if clHeaderInt > MaxFileSize {
-			return nil, &structs.UploadedMedia{}, errors.New("file too large, Amino doesn't allow file size that are larger then 6MB")
-		}
-
-		// Check if file are 0 bytes
-		if clHeaderInt == 0 {
-			return nil, &structs.UploadedMedia{}, errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server")
-		}
-
-		uploadContent = desRes.Body
-		utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
+	desRes, err := http.Get(des)
+	if err != nil {
+		return nil, &structs.UploadedMedia{}, err, doneUploading
 	}
-	return uploadContent, nil, nil
+	if desRes.StatusCode > 299 {
+		// Something fishy going on
+		return nil, &structs.UploadedMedia{}, errors.New(fmt.Sprintf("error while trying to capture a remote resources, but ended up with a HTTP status code of: %d", desRes.StatusCode)), doneUploading
+	}
+	//defer desRes.Body.Close()
+
+	var MaxFileSize = 6000000
+
+	// Check if a selected file are larger then 6MB
+	clHeader := desRes.Header.Get("Content-Length")
+	clHeaderInt, err := strconv.Atoi(clHeader)
+	if err != nil {
+		return nil, &structs.UploadedMedia{}, err, doneUploading
+	}
+	if clHeaderInt > MaxFileSize {
+		return nil, &structs.UploadedMedia{}, errors.New("file too large, Amino doesn't allow file size that are larger then 6MB"), doneUploading
+	}
+
+	// Check if file are 0 bytes
+	if clHeaderInt == 0 {
+		return nil, &structs.UploadedMedia{}, errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server"), doneUploading
+	}
+
+	uploadContent = desRes.Body
+	utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
+
+	go func() {
+		<-doneUploading
+		defer desRes.Body.Close()
+		close(doneUploading)
+	}()
+
+	return uploadContent, nil, nil, doneUploading
 }
