@@ -1,4 +1,4 @@
-# AminoGo [![GoDoc](https://godoc.org/github.com/AminoJS/AminoGo/aminogo?status.svg)](https://godoc.org/github.com/AminoJS/AminoGo/aminogo)
+# AminoGo [![GoDoc](https://godoc.org/github.com/AminoJS/AminoGo/aminogo?status.svg)](https://godoc.org/github.com/AminoJS/AminoGo/aminogo) ![Go](https://github.com/AminoJS/AminoGo/workflows/Go/badge.svg)
 
 
 👷This package is still under heavy development, so please use with caution ⚠️
@@ -28,7 +28,7 @@ import (
 
 # Examples
 
-For more examples and details use case, you can browse the [example.go](example.go) file
+For more examples and details use case, you can browse the [examples directory](examples/) file
 
 # Docs
 

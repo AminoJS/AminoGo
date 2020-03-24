@@ -6,6 +6,7 @@ import (
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
+	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
 	"net/http"
 	"net/url"
@@ -46,16 +47,14 @@ func getLocalFileContent(filePath string) (file interface{}, err error) {
 }
 
 // Upload a remote resource or a local binary file
-func UploadMedia(des string) (media structs.UploadedMedia, err error) {
+func UploadMedia(des string) (media *structs.UploadedMedia, err error) {
 
 	SID := stores.Get("SID")
 	if SID == nil {
-		return structs.UploadedMedia{}, errors.New("missing SID in state, try using aminogo.Login() first")
+		return &structs.UploadedMedia{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
-	if os.Getenv("GO_DEBUG") == "true" {
-		fmt.Printf("[upload_media.go] [DEBUG] DES: %s\n", des)
-	}
+	utils.DebugLog("upload_media.go", fmt.Sprintf("DES: %s", des))
 
 	desContainer := mediaContainer{
 		DES:              des,
@@ -73,53 +72,49 @@ func UploadMedia(des string) (media structs.UploadedMedia, err error) {
 	// Handle remote content
 	if desContainer.IsRemoteResource == true {
 
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Grepping REMOTE resource")
-		}
+		utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
 
 		desRes, err := http.Get(des)
 		defer desRes.Body.Close()
 		if err != nil {
-			return structs.UploadedMedia{}, err
+			return &structs.UploadedMedia{}, err
 		}
 		uploadContent = desRes.Body
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Done grepping REMOTE resource")
-		}
+		utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
 	}
 
 	// Handle local content
 	if desContainer.IsRemoteResource == false {
 
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Grepping LOCAL resource")
-		}
+		utils.DebugLog("upload_media.go", "Grepping LOCAL resource")
 
 		isAbso := path.IsAbs(desContainer.DES)
 
 		if isAbso == false {
-			return structs.UploadedMedia{}, errors.New("at this moment, AminoGo only supports absolute path for local file")
+			return &structs.UploadedMedia{}, errors.New("at this moment, AminoGo only supports absolute path for local file")
 		}
 
 		file, err := getLocalFileContent(desContainer.DES)
 		if err != nil {
-			return structs.UploadedMedia{}, err
+			return &structs.UploadedMedia{}, err
 		}
 		uploadContent = file
-		if os.Getenv("GO_DEBUG") == "true" {
-			fmt.Println("[upload_media.go] [DEBUG] Done grepping LOCAL resource")
-		}
+		utils.DebugLog("upload_media.go", "Done grepping LOCAL resource")
 	}
 
 	res, err := req.Post(endpoint, header, uploadContent)
 	if err != nil {
-		return structs.UploadedMedia{}, nil
+		return &structs.UploadedMedia{}, err
+	}
+	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	if err != nil {
+		return &structs.UploadedMedia{}, err
 	}
 
-	resMap := structs.UploadedMedia{}
+	resMap := &structs.UploadedMedia{}
 	err = res.ToJSON(&resMap)
 	if err != nil {
-		return structs.UploadedMedia{}, err
+		return &structs.UploadedMedia{}, err
 	}
 
 	return resMap, nil

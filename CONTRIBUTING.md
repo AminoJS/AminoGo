@@ -44,5 +44,16 @@ People *love* thorough bug reports. I'm not even kidding.
 
 * 4 spaces for indentation rather than tabs
 
+## Unit Testing
+It's best for write a test case for every newly/modified functions.
+
+And before you run any precious test cases, you need to make sure you have the correct Amino credential,
+and set it to the following environment variable
+
+````
+AMINO_USERNAME
+AMINO_PASSWORD
+````
+
 ## License
 By contributing, you agree that your contributions will be licensed under its MIT License.
