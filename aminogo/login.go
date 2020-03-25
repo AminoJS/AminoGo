@@ -10,6 +10,7 @@ import (
 	"github.com/AminoJS/AminoGo/utils"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -21,6 +22,12 @@ var (
 
 // Get authorize, and returns a session token
 func Login(email string, password string) error {
+
+	// Since at the start it the SID is already being obtained, so just return no errors to save some times for the CI jobs
+	if os.Getenv("CI") == "true" && os.Getenv("__AMINO_SID__") != "" {
+		stores.Set("SID", os.Getenv("__AMINO_SID__"))
+		return nil
+	}
 
 	if email == "" {
 		return errors.New("email address MUST be provided as a argument of this function call")
