@@ -3,6 +3,7 @@ package test
 import (
 	"errors"
 	"fmt"
+	"github.com/AminoJS/AminoGo/test_utils"
 	"github.com/AminoJS/AminoGo/utils"
 	"testing"
 )
@@ -31,9 +32,7 @@ func TestResourceNotFound(t *testing.T) {
 	if err == nil {
 		t.Errorf("Test should fail, since the mokc code is 404 OK, somehow got error:\n%v\n", err)
 	}
-	if err.Error() != expectErr.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-	}
+	test_utils.ExpectError(expectErr, err, t)
 }
 
 func TestUnauthorized(t *testing.T) {
@@ -43,9 +42,7 @@ func TestUnauthorized(t *testing.T) {
 	if err == nil {
 		t.Errorf("Test should fail, since the mokc code is 401 OK, somehow got error:\n%v\n", err)
 	}
-	if err.Error() != expectErr.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-	}
+	test_utils.ExpectError(expectErr, err, t)
 }
 
 func TestBadRequest(t *testing.T) {
@@ -55,21 +52,17 @@ func TestBadRequest(t *testing.T) {
 	if err == nil {
 		t.Errorf("Test should fail, since the mokc code is 400 OK, somehow got error:\n%v\n", err)
 	}
-	if err.Error() != expectErr.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-	}
+	test_utils.ExpectError(expectErr, err, t)
 }
 
-func MethodNotAllowed(t *testing.T) {
+func TestMethodNotAllowed(t *testing.T) {
 	code := 405
 	expectErr := errors.New("fail to login API call due to bad method not allowed (there must be a bug in AminoGo, please ensure AminoGo are update-to-date, if you are on the latest version, please repo this on GitHub at https://github.com/AminoJS/AminoGo/issues), resulted in a none 400 status code")
 	err := utils.ThrowHttpErrorIfFail(code)
 	if err == nil {
 		t.Errorf("Test should fail, since the mokc code is 405 OK, somehow got error:\n%v\n", err)
 	}
-	if err.Error() != expectErr.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-	}
+	test_utils.ExpectError(expectErr, err, t)
 }
 
 func TestInternalServerError(t *testing.T) {
@@ -79,9 +72,7 @@ func TestInternalServerError(t *testing.T) {
 	if err == nil {
 		t.Errorf("Test should fail, since the mokc code is 500 OK, somehow got error:\n%v\n", err)
 	}
-	if err.Error() != expectErr.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-	}
+	test_utils.ExpectError(expectErr, err, t)
 }
 
 func TestHttpErrorCapturing(t *testing.T) {
@@ -93,8 +84,6 @@ func TestHttpErrorCapturing(t *testing.T) {
 		if err == nil {
 			t.Errorf("Test should fail, since the mokc code is %d OK, somehow got error:\n%v\n", code, err)
 		}
-		if err.Error() != expectErr.Error() {
-			t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectErr)
-		}
+		test_utils.ExpectError(expectErr, err, t)
 	}
 }
