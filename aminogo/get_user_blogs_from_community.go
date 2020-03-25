@@ -24,6 +24,10 @@ func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *
 		return &structs.GetUserBlogsFromCommunity{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
+	if argument.CommunityID == 0 {
+		return &structs.GetUserBlogsFromCommunity{}, errors.New("CommunityID cannot be 0 or empty")
+	}
+
 	endpoint := routes.GetUserBlogsFromCommunity(argument.CommunityID, argument.UUID, argument.Start, argument.Size)
 
 	utils.DebugLog("get_user_blogs_from_community.go", fmt.Sprintf("URL: %s", endpoint))
