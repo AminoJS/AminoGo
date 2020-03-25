@@ -33,11 +33,6 @@ jobs:
       - name: Get dependencies
         working-directory: ./src/github.com/${{ github.repository }}
         run: |
-          go get -v -t -d ./...
-          if [ -f Gopkg.toml ]; then
-              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-              dep ensure
-          fi
           go mod download
 
       - name: Test
@@ -48,8 +43,6 @@ jobs:
     name: Security Checks
     runs-on: ubuntu-latest
     env:
-      AMINO_USERNAME: ${{secrets.AMINO_USERNAME}}
-      AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
       CI: "true"
       GOPATH: ${{ github.workspace }}
       GO111MODULE: on
@@ -69,14 +62,11 @@ jobs:
       - name: Get dependencies
         working-directory: ./src/github.com/${{ github.repository }}
         run: |
-          go get -v -t -d ./...
-          if [ -f Gopkg.toml ]; then
-              curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-              dep ensure
-          fi
-          go mod download
+          go mod download & \
           curl -sfL https://raw.githubusercontent.com/securego/gosec/master/install.sh | sudo sh -s -- -b /usr/bin latest
 
       - name: Security Checks
         working-directory: ./src/github.com/${{ github.repository }}
-        run: gosec aminogo/*.go
+        run: |
+          docker run -it -v ./src/github.com/${{ github.repository }}:/AminoGo securego/gosec /<PROJECT>/...
+          docker run -it -v $GOPATH/src/AminoJS/AminoGo:/go/src/github.com/AminoJS/AminoGo securego/gosec /go/src/github.com/AminoJS/AminoGo/aminogo/*.go
