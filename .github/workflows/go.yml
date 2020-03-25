@@ -16,7 +16,7 @@ jobs:
       AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
       CI: "true"
       GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
+      GO111MODULE: on
     steps:
 
       - name: Set up Go 1.13
@@ -50,7 +50,7 @@ jobs:
       AMINO_PASSWORD: ${{secrets.AMINO_PASSWORD}}
       CI: "true"
       GOPATH: ${{ github.workspace }}
-      GO111MODULE: off
+      GO111MODULE: on
     steps:
 
       - name: Set up Go 1.13
