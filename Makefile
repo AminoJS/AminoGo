@@ -1,3 +1,3 @@
 ci_run_test:
-	export __AMINO_SID__=$(CI=true go run scripts/GetSID.go)
+	export __AMINO_SID__=$(./scripts/GetSID)
 	go test github.com/AminoJS/AminoGo/test
