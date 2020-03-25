@@ -1,7 +1,9 @@
 package test
 
 import (
+	"errors"
 	"github.com/AminoJS/AminoGo/aminogo"
+	"github.com/AminoJS/AminoGo/test_utils"
 	"os"
 	"testing"
 )
@@ -9,7 +11,7 @@ import (
 func TestRequestBlogsFromCommunityBeforeLoggingIn(t *testing.T) {
 	_, err := aminogo.GetUserBlogsFromCommunity(&aminogo.GetUserBlogFromComOptions{})
 	if err == nil {
-		t.Error("There should be a error since we have obtain a session token yet")
+		t.Error("There should be an error since we have obtain a session token yet")
 	}
 }
 
@@ -34,8 +36,12 @@ func TestInvalidCommunityId(t *testing.T) {
 		Start:       0,
 		Size:        1,
 	})
+
+	expectedError := errors.New("CommunityID cannot be 0 or empty")
+	test_utils.ExpectError(expectedError, err, t)
+
 	if err == nil {
-		t.Error("There should be a error since argument 'CommunityID' is incorrect")
+		t.Error("There should be an error since argument 'CommunityID' is incorrect")
 	}
 }
 
@@ -47,7 +53,7 @@ func TestInvalidUUID(t *testing.T) {
 		Size:        1,
 	})
 	if err == nil {
-		t.Error("There should be a error since argument 'UUID' is incorrect")
+		t.Error("There should be an error since argument 'UUID' is incorrect")
 	}
 }
 

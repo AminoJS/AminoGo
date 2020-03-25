@@ -12,7 +12,7 @@ func TestEmptyCode(t *testing.T) {
 	code := 0
 	err := utils.ThrowHttpErrorIfFail(code)
 	if err == nil {
-		t.Errorf("There should be a error since the HTTP status code is 0 but Got:\n%v", err)
+		t.Errorf("There should be an error since the HTTP status code is 0 but Got:\n%v", err)
 	}
 
 }

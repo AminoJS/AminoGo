@@ -10,7 +10,7 @@ import (
 func TestUploadMediaBeforeLogin(t *testing.T) {
 	_, err := aminogo.UploadMedia("")
 	if err == nil {
-		t.Error("There should be a error since we have obtain a session token yet")
+		t.Error("There should be an error since we have obtain a session token yet")
 	}
 }
 
@@ -37,7 +37,7 @@ func TestZeroByteFile(t *testing.T) {
 	_, err = aminogo.UploadMedia(mockFileDes)
 	if err == nil {
 		removeMockFiles(mockFileDes)
-		t.Error("There should be a error since this test case is uploading a zero byte file, this action is be not allowed in this library")
+		t.Error("There should be an error since this test case is uploading a zero byte file, this action is be not allowed in this library")
 	}
 	if err.Error() != expectedError.Error() {
 		removeMockFiles(mockFileDes)
@@ -67,7 +67,7 @@ func TestFileTooLarge(t *testing.T) {
 
 	_, err = aminogo.UploadMedia(mockFileDes)
 	if err == nil {
-		t.Error("There should be a error since this test case is uploading a 6MB+ file, this action is be not allowed in this library")
+		t.Error("There should be an error since this test case is uploading a 6MB+ file, this action is be not allowed in this library")
 	}
 	expectedError := errors.New("file too large, Amino doesn't allow file size that are larger then 6MB")
 	if err.Error() != expectedError.Error() {
@@ -89,7 +89,7 @@ func TestUploadLocalMissingLocalResource(t *testing.T) {
 
 	_, err = aminogo.UploadMedia(picture)
 	if err == nil {
-		t.Error("There should be a error since this test case is uploading a missing none existing local file")
+		t.Error("There should be an error since this test case is uploading a missing none existing local file")
 	}
 }
 
@@ -105,7 +105,7 @@ func TestUploadLocalMissingRemoteResource(t *testing.T) {
 	expectedError := errors.New("error while trying to capture a remote resources, but ended up with a HTTP status code of: 404")
 	_, err = aminogo.UploadMedia(picture)
 	if err == nil {
-		t.Error("There should be a error since this test case is uploading a missing none existing remote file")
+		t.Error("There should be an error since this test case is uploading a missing none existing remote file")
 	}
 	if err.Error() != expectedError.Error() {
 		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectedError)

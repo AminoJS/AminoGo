@@ -9,7 +9,7 @@ import (
 func TestRequestProfileBeforeLogin(t *testing.T) {
 	_, err := aminogo.MyProfile()
 	if err == nil {
-		t.Error("There should be a error since we have obtain a session token yet")
+		t.Error("There should be an error since we have obtain a session token yet")
 	}
 }
 
