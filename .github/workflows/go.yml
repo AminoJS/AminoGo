@@ -68,5 +68,4 @@ jobs:
       - name: Security Checks
         working-directory: ./src/github.com/${{ github.repository }}
         run: |
-          docker run -it -v ./src/github.com/${{ github.repository }}:/AminoGo securego/gosec /<PROJECT>/...
           docker run -it -v $GOPATH/src/AminoJS/AminoGo:/go/src/github.com/AminoJS/AminoGo securego/gosec /go/src/github.com/AminoJS/AminoGo/aminogo/*.go
