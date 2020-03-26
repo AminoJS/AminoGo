@@ -12,7 +12,15 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	media, err := aminogo.UploadMedia("http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.jpg")
+	imageSource := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.jpg"
+
+	mediaContainer, err := aminogo.UploadMedia(imageSource)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	media, err := mediaContainer.Remote()
 	if err != nil {
 		fmt.Println(err)
 		return
