@@ -27,7 +27,7 @@ func ThrowHttpErrorIfFail(res *http.Response) (err error) {
 
 		jStr, _ := ioutil.ReadAll(res.Body)
 
-		if string(jStr) != "" {
+		if string(jStr) != "" && jStr != nil {
 			json.Unmarshal(jStr, body)
 
 			aminoMsg = body["api:message"].(interface{})
