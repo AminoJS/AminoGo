@@ -9,3 +9,7 @@ func Set(key string, value interface{}) {
 func Get(key string) interface{} {
 	return container[key]
 }
+
+func Remove(key string) {
+	delete(container, key)
+}
