@@ -3,12 +3,14 @@ package test
 import (
 	"errors"
 	"github.com/AminoJS/AminoGo/aminogo"
+	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/test_utils"
 	"os"
 	"testing"
 )
 
 func TestRequestJoinedChatroomsforeLogin(t *testing.T) {
+	stores.Remove("SID")
 	_, err := aminogo.GetJoinedChatrooms(&aminogo.GetJoinedChatroomsOptions{
 		CommunityID: 0,
 		Start:       0,
