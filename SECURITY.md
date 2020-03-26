@@ -18,7 +18,7 @@ If you believe you have found any vulnerability, and would like to report to our
 
 References:
 
-Code: [GitHub](https://github.com/AminoJS/AminoGo/blob/eaa8f18a7c2fc029994951d357fcf9b59e84cd64/aminogo/upload_media.go#L118-L137)
+Code: [GitHub](https://github.com/AminoJS/AminoGo/blob/eaa8f18a7c2fc029994951d357fcf9b59e84cd64/aminogo/upload_media.go#L97-L137)
 
 Gosec: [Rules](https://github.com/securego/gosec#available-rules)
 
