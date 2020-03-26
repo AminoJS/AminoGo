@@ -14,12 +14,7 @@ func TestRequestProfileBeforeLogin(t *testing.T) {
 }
 
 func TestRequestingResource(t *testing.T) {
-
-	username := os.Getenv("AMINO_USERNAME")
-	password := os.Getenv("AMINO_PASSWORD")
-
-	err := aminogo.Login(username, password)
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 	}
 

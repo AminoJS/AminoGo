@@ -16,12 +16,7 @@ func TestRequestBlogsFromCommunityBeforeLoggingIn(t *testing.T) {
 }
 
 func TestInvalidCommunityId(t *testing.T) {
-
-	username := os.Getenv("AMINO_USERNAME")
-	password := os.Getenv("AMINO_PASSWORD")
-
-	err := aminogo.Login(username, password)
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 	}
 
@@ -45,7 +40,10 @@ func TestInvalidCommunityId(t *testing.T) {
 	}
 }
 
-func TestInvalidUUID(t *testing.T) {
+func TestInvalidCommunityUUID(t *testing.T) {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
+		t.Error(err)
+	}
 	_, err := aminogo.GetUserBlogsFromCommunity(&aminogo.GetUserBlogFromComOptions{
 		CommunityID: 0,
 		UUID:        "",
@@ -58,12 +56,7 @@ func TestInvalidUUID(t *testing.T) {
 }
 
 func TestGreppingNothing(t *testing.T) {
-
-	username := os.Getenv("AMINO_USERNAME")
-	password := os.Getenv("AMINO_PASSWORD")
-
-	err := aminogo.Login(username, password)
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 	}
 

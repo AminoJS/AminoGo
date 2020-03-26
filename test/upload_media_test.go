@@ -28,11 +28,9 @@ func TestZeroByteFile(t *testing.T) {
 		t.Error(err)
 	}
 
-	err = aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 		removeMockFiles(mockFileDes)
-		return
 	}
 
 	expectedError := errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server")
@@ -68,10 +66,9 @@ func TestFileTooLarge(t *testing.T) {
 		t.Error(err)
 	}
 
-	err = aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
+		removeMockFiles(mockFileDes)
 	}
 
 	mc, err := aminogo.UploadMedia(mockFileDes)
@@ -97,11 +94,8 @@ func TestFileTooLarge(t *testing.T) {
 
 func TestUploadLocalMissingLocalResource(t *testing.T) {
 	picture := "./missing.jpg"
-
-	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
 	}
 
 	mc, err := aminogo.UploadMedia(picture)
@@ -120,11 +114,8 @@ func TestUploadLocalMissingLocalResource(t *testing.T) {
 
 func TestUploadLocalMissingRemoteResource(t *testing.T) {
 	picture := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.oof"
-
-	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
 	}
 
 	expectedError := errors.New("error while trying to capture a remote resources, but ended up with a HTTP status code of: 404")
@@ -144,11 +135,8 @@ func TestUploadLocalMissingRemoteResource(t *testing.T) {
 
 func TestG304Attack(t *testing.T) {
 	picture := "./attack.jpg"
-
-	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
 	}
 
 	mc, err := aminogo.UploadMedia(picture)
@@ -170,11 +158,8 @@ func TestG304Attack(t *testing.T) {
 
 func TestUploadRemoteResource(t *testing.T) {
 	picture := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.jpg"
-
-	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
 	}
 
 	mc, err := aminogo.UploadMedia(picture)
@@ -191,11 +176,8 @@ func TestUploadRemoteResource(t *testing.T) {
 
 func TestUploadLocalResource(t *testing.T) {
 	picture := "image.jpg"
-
-	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
-	if err != nil {
+	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
-		return
 	}
 
 	mc, err := aminogo.UploadMedia(picture)
