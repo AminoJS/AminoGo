@@ -41,7 +41,7 @@ func isValidUrl(toTest string) bool {
 }
 
 func getLocalFileContent(filePath string) (file interface{}, err error) {
-	/* #nosec */
+	/* #nosec G304 */
 	// Counter measure #1
 	// For more reading, please reference SECURITY.md
 	file, fsErr := os.Open(filePath)
