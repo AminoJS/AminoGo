@@ -3,24 +3,10 @@ package test
 import (
 	"errors"
 	"github.com/AminoJS/AminoGo/aminogo"
-	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/test_utils"
 	"os"
 	"testing"
 )
-
-func TestRequestJoinedChatroomsforeLogin(t *testing.T) {
-	stores.Remove("SID")
-	_, err := aminogo.GetJoinedChatrooms(&aminogo.GetJoinedChatroomsOptions{
-		CommunityID: 0,
-		Start:       0,
-		Size:        0,
-	})
-	if err == nil {
-		t.Error("There should be an error since we haven't obtain a session token yet")
-	}
-	test_utils.ExpectError(errors.New("missing SID in state, try using aminogo.Login() first"), err, t)
-}
 
 func TestInvalidCommunityIdForChatrooms(t *testing.T) {
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {

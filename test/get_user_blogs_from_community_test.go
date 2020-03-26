@@ -8,14 +8,6 @@ import (
 	"testing"
 )
 
-func TestRequestBlogsFromCommunityBeforeLoggingIn(t *testing.T) {
-	_, err := aminogo.GetUserBlogsFromCommunity(&aminogo.GetUserBlogFromComOptions{})
-	if err == nil {
-		t.Error("There should be an error since we haven't obtain a session token yet")
-	}
-	test_utils.ExpectError(errors.New("missing SID in state, try using aminogo.Login() first"), err, t)
-}
-
 func TestInvalidCommunityId(t *testing.T) {
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)

@@ -19,7 +19,7 @@ type GetJoinedCommunitiesOptions struct {
 // Get a list of user's joined communities
 func GetJoinedCommunities(argument *GetJoinedCommunitiesOptions) (joinedCommunities *structs.JoinedCommunities, err error) {
 	SID := stores.Get("SID")
-	if SID == nil {
+	if SID == nil || SID == "" {
 		return &structs.JoinedCommunities{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 

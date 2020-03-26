@@ -13,7 +13,7 @@ import (
 // Get a list of blogs from a targeted community
 func GetBlogFeed(communityID int, start int, size int) (blogsFeed *structs.CommunityBlogsFeed, err error) {
 	SID := stores.Get("SID")
-	if SID == nil {
+	if SID == nil || SID == "" {
 		return &structs.CommunityBlogsFeed{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 

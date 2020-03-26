@@ -13,8 +13,7 @@ import (
 // Get a detailed chat log from a selected chat room
 func GetChat(communityID int, threadID string) (*structs.GetChat, error) {
 	SID := stores.Get("SID")
-	if SID == nil {
-		//return &structs.JoinedChatrooms{}, errors.New("missing SID in state, try using aminogo.Login() first")
+	if SID == nil || SID == "" {
 		return &structs.GetChat{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 

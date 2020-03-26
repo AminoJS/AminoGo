@@ -158,7 +158,7 @@ References:
 func streamToServer(mc *mediaContainer, doneUploading chan bool) (media *structs.UploadedMedia, err error) {
 
 	SID := stores.Get("SID")
-	if SID == nil {
+	if SID == nil || SID == "" {
 		return &structs.UploadedMedia{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 

@@ -7,13 +7,6 @@ import (
 	"testing"
 )
 
-func TestGetChatBeforeLogin(t *testing.T) {
-	_, err := aminogo.GetChat(0, "")
-	if err == nil {
-		t.Error("Should throw error since store have store any SID token yet")
-	}
-}
-
 func TestGetChatWithInvalidIDs(t *testing.T) {
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)

@@ -17,7 +17,7 @@ import (
 func MyProfile() (profile *structs.MyProfile, err error) {
 	SID := stores.Get("SID")
 
-	if SID == nil {
+	if SID == nil || SID == "" {
 		return &structs.MyProfile{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
