@@ -345,3 +345,41 @@ type GetUserBlogsFromCommunity struct {
 	} `json:"blogList"`
 	APITimestamp time.Time `json:"api:timestamp"`
 }
+
+type GetChat struct {
+	APIStatuscode int    `json:"api:statuscode"`
+	APIDuration   string `json:"api:duration"`
+	APIMessage    string `json:"api:message"`
+	MessageList   []struct {
+		IncludedInSummary bool   `json:"includedInSummary"`
+		UID               string `json:"uid"`
+		Author            struct {
+			Status                  int    `json:"status"`
+			IsNicknameVerified      bool   `json:"isNicknameVerified"`
+			UID                     string `json:"uid"`
+			Level                   int    `json:"level"`
+			FollowingStatus         int    `json:"followingStatus"`
+			AccountMembershipStatus int    `json:"accountMembershipStatus"`
+			IsGlobal                bool   `json:"isGlobal"`
+			MembershipStatus        int    `json:"membershipStatus"`
+			Reputation              int    `json:"reputation"`
+			Role                    int    `json:"role"`
+			NdcID                   int    `json:"ndcId"`
+			MembersCount            int    `json:"membersCount"`
+			Nickname                string `json:"nickname"`
+			Icon                    string `json:"icon"`
+		} `json:"author"`
+		IsHidden    bool        `json:"isHidden"`
+		MessageID   string      `json:"messageId"`
+		MediaType   int         `json:"mediaType"`
+		Content     interface{} `json:"content"`
+		ClientRefID int         `json:"clientRefId"`
+		ThreadID    string      `json:"threadId"`
+		CreatedTime time.Time   `json:"createdTime"`
+		Extensions  struct {
+		} `json:"extensions"`
+		Type       int    `json:"type"`
+		MediaValue string `json:"mediaValue"`
+	} `json:"messageList"`
+	APITimestamp time.Time `json:"api:timestamp"`
+}
