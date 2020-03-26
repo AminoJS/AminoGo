@@ -68,6 +68,6 @@ jobs:
       - name: Security Checks
         working-directory: ./src/github.com/${{ github.repository }}
         run: |
-          gosec -exclude=G107,G304 $GOPATH/src/github.com/AminoJS/AminoGo/aminogo
-          gosec -exclude=G107,G304 $GOPATH/src/github.com/AminoJS/AminoGo/utils
-          gosec -exclude=G107,G304 $GOPATH/src/github.com/AminoJS/AminoGo/test -test
+          gosec $GOPATH/src/github.com/AminoJS/AminoGo/aminogo
+          gosec $GOPATH/src/github.com/AminoJS/AminoGo/utils
+          gosec $GOPATH/src/github.com/AminoJS/AminoGo/test -test
