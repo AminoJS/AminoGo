@@ -2,8 +2,10 @@ package test
 
 import (
 	"errors"
+	"fmt"
 	"github.com/AminoJS/AminoGo/aminogo"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -34,7 +36,14 @@ func TestZeroByteFile(t *testing.T) {
 	}
 
 	expectedError := errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server")
-	_, err = aminogo.UploadMedia(mockFileDes)
+	mc, err := aminogo.UploadMedia(mockFileDes)
+	if err != nil {
+		t.Error(err)
+	}
+	_, err = mc.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      fmt.Sprintf("./test/%s", mockFileDes),
+	})
 	if err == nil {
 		removeMockFiles(mockFileDes)
 		t.Error("There should be an error since this test case is uploading a zero byte file, this action is be not allowed in this library")
@@ -65,7 +74,15 @@ func TestFileTooLarge(t *testing.T) {
 		return
 	}
 
-	_, err = aminogo.UploadMedia(mockFileDes)
+	mc, err := aminogo.UploadMedia(mockFileDes)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = mc.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      fmt.Sprintf("./test/%s", mockFileDes),
+	})
 	if err == nil {
 		t.Error("There should be an error since this test case is uploading a 6MB+ file, this action is be not allowed in this library")
 	}
@@ -87,7 +104,15 @@ func TestUploadLocalMissingLocalResource(t *testing.T) {
 		return
 	}
 
-	_, err = aminogo.UploadMedia(picture)
+	mc, err := aminogo.UploadMedia(picture)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = mc.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      fmt.Sprintf("./test/%s", picture),
+	})
 	if err == nil {
 		t.Error("There should be an error since this test case is uploading a missing none existing local file")
 	}
@@ -103,12 +128,43 @@ func TestUploadLocalMissingRemoteResource(t *testing.T) {
 	}
 
 	expectedError := errors.New("error while trying to capture a remote resources, but ended up with a HTTP status code of: 404")
-	_, err = aminogo.UploadMedia(picture)
+	mc, err := aminogo.UploadMedia(picture)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = mc.Remote()
 	if err == nil {
 		t.Error("There should be an error since this test case is uploading a missing none existing remote file")
 	}
 	if err.Error() != expectedError.Error() {
 		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectedError)
+	}
+}
+
+func TestG304Attack(t *testing.T) {
+	picture := "./attack.jpg"
+
+	err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD"))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+
+	mc, err := aminogo.UploadMedia(picture)
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = mc.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      fmt.Sprintf("./../../test/%s", picture),
+	})
+	if err == nil {
+		t.Error("There should be an error since this the FileName is out-of-range from the original indented base directory")
+	}
+	if strings.Contains(err.Error(), "Possible G304 attack!") == false {
+		t.Errorf("Error are difference from intented, Got: %v", err)
 	}
 }
 
@@ -121,10 +177,16 @@ func TestUploadRemoteResource(t *testing.T) {
 		return
 	}
 
-	_, err = aminogo.UploadMedia(picture)
+	mc, err := aminogo.UploadMedia(picture)
 	if err != nil {
 		t.Error(err)
 	}
+
+	_, err = mc.Remote()
+	if err != nil {
+		t.Error(err)
+	}
+
 }
 
 func TestUploadLocalResource(t *testing.T) {
@@ -136,8 +198,17 @@ func TestUploadLocalResource(t *testing.T) {
 		return
 	}
 
-	_, err = aminogo.UploadMedia(picture)
+	mc, err := aminogo.UploadMedia(picture)
 	if err != nil {
 		t.Error(err)
 	}
+
+	_, err = mc.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      fmt.Sprintf("./test/%s", picture),
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
 }
