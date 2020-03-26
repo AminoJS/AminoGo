@@ -31,3 +31,7 @@ func GetJoinedChatrooms(communityID int, start int, size int) string {
 func GetUserBlogsFromCommunity(communityID int, UUID string, start int, size int) string {
 	return fmt.Sprintf("%s/api/v1/x%d/s/blog?type=user&q=%s&start=%d&size=%d", ENDPOINT, communityID, UUID, start, size)
 }
+
+func GetChat(communityID int, threadID string) string {
+	return fmt.Sprintf("%s/api/v1/x%d/s/chat/thread/%s/message", ENDPOINT, communityID, threadID)
+}
