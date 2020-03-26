@@ -20,11 +20,14 @@ func formReturnMessage(msg string, res *http.Response) error {
 		fmt.Println(string(jStr))
 
 		if string(jStr) != "" && jStr != nil {
-			json.Unmarshal(jStr, body)
-
-			aminoMsg = body["api:message"].(interface{})
+			err := json.Unmarshal(jStr, body)
+			if err != nil {
+				aminoMsg = "(AminoGo Could Not Parse Error Message)"
+			} else {
+				aminoMsg = body["api:message"].(interface{})
+			}
 		} else {
-			aminoMsg = "(AminoGo Could Not Parse Error Message)"
+			aminoMsg = "(AminoGo Said Nothing)"
 		}
 	}
 
