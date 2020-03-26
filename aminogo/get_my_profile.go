@@ -32,7 +32,7 @@ func MyProfile() (profile *structs.MyProfile, err error) {
 		return &structs.MyProfile{}, err
 	}
 	defer res.Body.Close()
-	err = utils.ThrowHttpErrorIfFail(res.StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res)
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}

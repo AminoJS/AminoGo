@@ -43,7 +43,7 @@ func GetJoinedChatrooms(argument *GetJoinedChatroomsOptions) (joinedChatrooms *s
 	if err != nil {
 		return &structs.JoinedChatrooms{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.JoinedChatrooms{}, err
 	}

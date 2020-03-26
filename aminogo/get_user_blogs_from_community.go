@@ -40,7 +40,7 @@ func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *
 	if err != nil {
 		return &structs.GetUserBlogsFromCommunity{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.GetUserBlogsFromCommunity{}, err
 	}

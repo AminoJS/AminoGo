@@ -29,7 +29,7 @@ func GetBlogFeed(communityID int, start int, size int) (blogsFeed *structs.Commu
 	if err != nil {
 		return &structs.CommunityBlogsFeed{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.CommunityBlogsFeed{}, err
 	}

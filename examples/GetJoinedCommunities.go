@@ -22,5 +22,5 @@ func main() {
 		return
 	}
 	firstCommunity := joinedCommunities.CommunityList[0]
-	fmt.Printf("First Community Icon: %d\n", firstCommunity.NdcID)
+	fmt.Printf("First Community ID: %d\nName: %s", firstCommunity.NdcID, firstCommunity.Name)
 }

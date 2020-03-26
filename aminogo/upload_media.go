@@ -179,7 +179,7 @@ func streamToServer(mc *mediaContainer, doneUploading chan bool) (media *structs
 		doneUploading <- true
 	}
 
-	err = utils.ThrowHttpErrorIfFail(res.Response().StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.UploadedMedia{}, err
 	}

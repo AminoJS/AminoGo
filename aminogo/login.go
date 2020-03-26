@@ -61,7 +61,7 @@ func Login(email string, password string) error {
 		return err
 	}
 
-	err = utils.ThrowHttpErrorIfFail(res.StatusCode)
+	err = utils.ThrowHttpErrorIfFail(res)
 	if err != nil {
 		return err
 	}
