@@ -11,8 +11,9 @@ import (
 func TestRequestBlogsFromCommunityBeforeLoggingIn(t *testing.T) {
 	_, err := aminogo.GetUserBlogsFromCommunity(&aminogo.GetUserBlogFromComOptions{})
 	if err == nil {
-		t.Error("There should be an error since we have obtain a session token yet")
+		t.Error("There should be an error since we haven't obtain a session token yet")
 	}
+	test_utils.ExpectError(errors.New("missing SID in state, try using aminogo.Login() first"), err, t)
 }
 
 func TestInvalidCommunityId(t *testing.T) {

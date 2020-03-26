@@ -15,8 +15,9 @@ func TestRequestJoinedChatroomsforeLogin(t *testing.T) {
 		Size:        0,
 	})
 	if err == nil {
-		t.Error("There should be an error since we have obtain a session token yet")
+		t.Error("There should be an error since we haven't obtain a session token yet")
 	}
+	test_utils.ExpectError(errors.New("missing SID in state, try using aminogo.Login() first"), err, t)
 }
 
 func TestInvalidCommunityIdForChatrooms(t *testing.T) {
@@ -29,7 +30,7 @@ func TestInvalidCommunityIdForChatrooms(t *testing.T) {
 		Size:        0,
 	})
 	if err == nil {
-		t.Error("There should be an error since we have obtain a session token yet")
+		t.Error("There should be an error since we haven't obtain a session token yet")
 	}
 	expectedErr := errors.New("fail to login API call due to bad request (perhaps you are giving the wrong arguments), resulted in a none 400 status code")
 	test_utils.ExpectError(expectedErr, err, t)
