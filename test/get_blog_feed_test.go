@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestRequestBlogFeedforeLogin(t *testing.T) {
+func TestRequestBlogFeedBforeLogin(t *testing.T) {
 	_, err := aminogo.GetBlogFeed(0, 0, 0)
 	if err == nil {
 		t.Error("There should be an error since we have obtain a session token yet")
