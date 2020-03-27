@@ -301,7 +301,7 @@ func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 
 	go func() {
 		<-doneUploading
-		desRes.Response().Body.Close()
+		defer desRes.Response().Body.Close()
 		close(doneUploading)
 	}()
 
