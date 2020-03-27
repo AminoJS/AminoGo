@@ -12,7 +12,12 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	imageSource := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.jpg"
+
+	/*
+	   Original image is from one of the wallpapers from PoPOS
+	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
+	*/
+	imageSource := "http://pm1.narvii.com/7511/262dc66e4d7e3256b1ddbd10bf216a17b85abb69r1-2048-1152v2_00.jpg"
 
 	mediaContainer, err := aminogo.UploadMedia(imageSource)
 	if err != nil {

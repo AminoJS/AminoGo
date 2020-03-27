@@ -113,7 +113,11 @@ func TestUploadLocalMissingLocalResource(t *testing.T) {
 }
 
 func TestUploadLocalMissingRemoteResource(t *testing.T) {
-	picture := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.oof"
+	/*
+	   Original image is from one of the wallpapers from PoPOS
+	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
+	*/
+	picture := "https://i.imgur.com/xZL03gq.off"
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 	}
@@ -157,7 +161,11 @@ func TestG304Attack(t *testing.T) {
 }
 
 func TestUploadRemoteResource(t *testing.T) {
-	picture := "http://pm1.narvii.com/7502/17fe54011759e3ced794abb6e569028620faa81ar1-400-400v2_00.jpg"
+	/*
+	   Original image is from one of the wallpapers from PoPOS
+	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
+	*/
+	picture := "http://pm1.narvii.com/7511/262dc66e4d7e3256b1ddbd10bf216a17b85abb69r1-2048-1152v2_00.jpg"
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
 		t.Error(err)
 	}
@@ -185,12 +193,13 @@ func TestUploadLocalResource(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = mc.Local(&aminogo.PathInterface{
+	media, err := mc.Local(&aminogo.PathInterface{
 		BaseDirectory: os.Getenv("PWD"),
 		FileName:      fmt.Sprintf("./test/%s", picture),
 	})
 	if err != nil {
 		t.Error(err)
 	}
+	t.Log(media.MediaValue)
 
 }
