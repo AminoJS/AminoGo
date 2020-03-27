@@ -1,15 +1,13 @@
 package aminogo
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
-	"io/ioutil"
-	"net/http"
+	"github.com/imroc/req"
 	"time"
 )
 
@@ -21,33 +19,29 @@ func MyProfile() (profile *structs.MyProfile, err error) {
 		return &structs.MyProfile{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
-	req, err := http.NewRequest("GET", routes.MyProfile(), nil)
-	if err != nil {
-		return &structs.MyProfile{}, err
+	header := req.Header{
+		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
 	}
-	req.Header.Add("NDCAUTH", fmt.Sprintf("sid=%s", SID))
-	client := &http.Client{Timeout: time.Second * 10}
-	res, err := client.Do(req)
-	if err != nil {
-		return &structs.MyProfile{}, err
-	}
-	defer res.Body.Close()
-	err = utils.ThrowHttpErrorIfFail(res)
+
+	endpoint := routes.MyProfile()
+
+	utils.DebugLog("get_my_profile.go", fmt.Sprintf("URL: %s", endpoint))
+
+	req.SetTimeout(30 * time.Second)
+	res, err := req.Get(endpoint, header)
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}
 
-	var bodyMap structs.MyProfile
-
-	jStr, err := ioutil.ReadAll(res.Body)
+	resMap := structs.MyProfile{}
+	err = res.ToJSON(&resMap)
+	if err != nil {
+		return &structs.MyProfile{}, err
+	}
+	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}
 
-	err = json.Unmarshal(jStr, &bodyMap)
-	if err != nil {
-		return &structs.MyProfile{}, err
-	}
-
-	return &bodyMap, nil
+	return &resMap, nil
 }

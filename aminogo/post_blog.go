@@ -13,6 +13,7 @@ import (
 )
 
 // Post a blog post to a selected community
+// Post a blog post to a selected community
 func PostBlog(communityID int, title string, content string, mediaList *[]*MediaContainer) (*structs.PostedBlog, error) {
 
 	SID := stores.Get("SID")
@@ -67,6 +68,7 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 		data["mediaList"] = postMediaList
 	}
 
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Post(endpoint, header, req.BodyJSON(data))
 	if err != nil {
 		return &structs.PostedBlog{}, err

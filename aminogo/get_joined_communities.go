@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/AminoJS/AminoGo/utils"
+	"time"
 
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
@@ -33,6 +34,7 @@ func GetJoinedCommunities(argument *GetJoinedCommunitiesOptions) (joinedCommunit
 
 	utils.DebugLog("get_joined_communities.go", fmt.Sprintf("URL: %s", endpoint))
 
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Get(endpoint, header)
 	if err != nil {
 		return &structs.JoinedCommunities{}, err

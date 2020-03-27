@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
+	"time"
 )
 
 type GetJoinedChatroomsOptions struct {
@@ -31,6 +32,7 @@ func GetJoinedChatrooms(argument *GetJoinedChatroomsOptions) (joinedChatrooms *s
 
 	utils.DebugLog("get_joined_chatrooms.go", fmt.Sprintf("URL: %s", endpoint))
 
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Get(endpoint, header)
 	if err != nil {
 		return &structs.JoinedChatrooms{}, err

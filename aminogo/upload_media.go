@@ -9,13 +9,13 @@ import (
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
 	"math/rand"
-	"net/http"
 	"net/url"
 	"os"
 	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var letterRunes = []rune("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -196,6 +196,8 @@ func streamToServer(mc *MediaContainer, doneUploading chan bool) (media *structs
 	header := req.Header{
 		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
 	}
+
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Post(endpoint, header, mc.uploadContent)
 	if err != nil {
 		return &structs.UploadedMedia{}, err
@@ -265,19 +267,20 @@ func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 
 	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
 
-	desRes, err := http.Get(mc.des)
+	req.SetTimeout(30 * time.Second)
+	desRes, err := req.Get(mc.des)
 	if err != nil {
 		return err, doneUploading
 	}
-	if desRes.StatusCode > 299 {
+	if desRes.Response().StatusCode > 299 {
 		// Something fishy going on
-		return errors.New(fmt.Sprintf("error while trying to capture a remote resources, but ended up with a HTTP status code of: %d", desRes.StatusCode)), doneUploading
+		return errors.New(fmt.Sprintf("error while trying to capture a remote resources, but ended up with a HTTP status code of: %d", desRes.Response().StatusCode)), doneUploading
 	}
 
 	var MaxFileSize = 6000000
 
 	// Check if a selected file are larger then 6MB
-	clHeader := desRes.Header.Get("Content-Length")
+	clHeader := desRes.Response().Header.Get("Content-Length")
 	clHeaderInt, err := strconv.Atoi(clHeader)
 	if err != nil {
 		return err, doneUploading
@@ -293,11 +296,11 @@ func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 
 	utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
 
-	mc.uploadContent = desRes.Body
+	mc.uploadContent = desRes.Request().Body
 
 	go func() {
 		<-doneUploading
-		defer desRes.Body.Close()
+		defer desRes.Response().Body.Close()
 		close(doneUploading)
 	}()
 

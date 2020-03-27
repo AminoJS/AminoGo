@@ -2,7 +2,7 @@ package structs
 
 import "time"
 
-// All struct are generated using https://mholt.github.io/json-to-go/
+// All below structures are generated using https://mholt.github.io/json-to-go/
 
 type MyProfile struct {
 	APIStatuscode int `json:"api:statuscode"`

@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
+	"time"
 )
 
 type GetUserBlogFromComOptions struct {
@@ -36,6 +37,7 @@ func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *
 		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
 	}
 
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Get(endpoint, header)
 	if err != nil {
 		return &structs.BlogsFromCommunity{}, err

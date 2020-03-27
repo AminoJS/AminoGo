@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/utils"
+	"github.com/imroc/req"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -44,6 +45,7 @@ func Login(email string, password string) error {
 	jStr, _ := json.Marshal(postAuthBody)
 	data := bytes.NewReader(jStr)
 
+	req.SetTimeout(30 * time.Second)
 	res, err := http.Post(routes.Login(), "application/json", data)
 	if err != nil {
 		return err

@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
+	"time"
 )
 
 // Get a detailed chat log from a selected chat room
@@ -24,7 +25,7 @@ func GetChat(communityID int, threadID string) (*structs.ChatRecords, error) {
 	endpoint := routes.GetChat(communityID, threadID)
 
 	utils.DebugLog("get_chat.go", fmt.Sprintf("URL: %s", endpoint))
-
+	req.SetTimeout(30 * time.Second)
 	res, err := req.Get(endpoint, header)
 	if err != nil {
 		return &structs.ChatRecords{}, err
