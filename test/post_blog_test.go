@@ -53,12 +53,13 @@ func TestPostBlogWithCaptionAndInsertedImage(t *testing.T) {
 
 	title := "Test Case From AminoGo"
 
+	output, err := gitUsernameCmd.Output()
+	if err != nil {
+		log.Print(err)
+		useCustomContent = false
+	}
+
 	if useCustomContent {
-		output, err := gitUsernameCmd.Output()
-		if err != nil {
-			log.Print(err)
-			useCustomContent = false
-		}
 		gitUsername := fmt.Sprintf("%v", string(output))
 		firstName := strings.Split(gitUsername, " ")
 		title = fmt.Sprintf("Test blog from ur boi %s [Test Case Runner]", firstName[0])
