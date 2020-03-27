@@ -175,6 +175,7 @@ References:
 	return media, nil
 }
 
+// Generate a random reference key for PostBlog function to use
 func (mc *MediaContainer) GenerateReferenceKey() string {
 	refKey := randStringRunes(4)
 	mc.referenceKey = refKey
