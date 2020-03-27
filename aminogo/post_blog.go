@@ -1,7 +1,6 @@
 package aminogo
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
@@ -13,6 +12,7 @@ import (
 	"time"
 )
 
+// Post a blog post to a selected community
 func PostBlog(communityID int, title string, content string, mediaList *[]*MediaContainer) (*structs.PostedBlog, error) {
 
 	SID := stores.Get("SID")
@@ -45,10 +45,6 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 	data["eventSource"] = "eventSource"
 	data["timestamp"] = time.Now().Unix()
 
-	// Inserted
-	// Inserted with caption
-	// Upload with caption
-
 	// Replace reference key
 	var postMediaList []interface{}
 
@@ -71,10 +67,7 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 		data["mediaList"] = postMediaList
 	}
 
-	a, _ := json.Marshal(data)
-	fmt.Println(string(a))
-
-	res, err := req.Post(endpoint, header, data)
+	res, err := req.Post(endpoint, header, req.BodyJSON(data))
 	if err != nil {
 		return &structs.PostedBlog{}, err
 	}
@@ -82,8 +75,6 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 	if err != nil {
 		return &structs.PostedBlog{}, err
 	}
-
-	fmt.Println(res.ToString())
 
 	resMap := structs.PostedBlog{}
 	err = res.ToJSON(&resMap)
