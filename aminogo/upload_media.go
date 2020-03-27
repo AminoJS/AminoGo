@@ -197,7 +197,7 @@ func streamToServer(mc *MediaContainer, doneUploading chan bool) (media *structs
 		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
 	}
 
-	req.SetTimeout(30 * time.Second)
+	req.SetTimeout(5 * time.Minute)
 	res, err := req.Post(endpoint, header, mc.uploadContent)
 	if err != nil {
 		return &structs.UploadedMedia{}, err
@@ -267,7 +267,7 @@ func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 
 	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
 
-	req.SetTimeout(30 * time.Second)
+	req.SetTimeout(5 * time.Minute)
 	desRes, err := req.Get(mc.des)
 	if err != nil {
 		return err, doneUploading
