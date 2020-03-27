@@ -9,13 +9,6 @@ import (
 	"testing"
 )
 
-func TestUploadMediaBeforeLogin(t *testing.T) {
-	_, err := aminogo.UploadMedia("")
-	if err == nil {
-		t.Error("There should be an error since we haven't obtain a session token yet")
-	}
-}
-
 func removeMockFiles(mockFilePath string) {
 	os.Remove(mockFilePath)
 }
@@ -112,30 +105,30 @@ func TestUploadLocalMissingLocalResource(t *testing.T) {
 	}
 }
 
-func TestUploadLocalMissingRemoteResource(t *testing.T) {
-	/*
-	   Original image is from one of the wallpapers from PoPOS
-	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
-	*/
-	picture := "https://i.imgur.com/xZL03gq.off"
-	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
-		t.Error(err)
-	}
-
-	expectedError := errors.New("error while trying to capture a remote resources, but ended up with a HTTP status code of: 404")
-	mc, err := aminogo.UploadMedia(picture)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = mc.Remote()
-	if err == nil {
-		t.Error("There should be an error since this test case is uploading a missing none existing remote file")
-	}
-	if err.Error() != expectedError.Error() {
-		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectedError)
-	}
-}
+//func TestUploadLocalMissingRemoteResource(t *testing.T) {
+//	/*
+//	   Original image is from one of the wallpapers from PoPOS
+//	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
+//	*/
+//	picture := "https://i.imgur.com/xZL03gq.off"
+//	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
+//		t.Error(err)
+//	}
+//
+//	expectedError := errors.New("error while trying to capture a remote resources, but ended up with a HTTP status code of: 404")
+//	mc, err := aminogo.UploadMedia(picture)
+//	if err != nil {
+//		t.Error(err)
+//	}
+//
+//	_, err = mc.Remote()
+//	if err == nil {
+//		t.Error("There should be an error since this test case is uploading a missing none existing remote file")
+//	}
+//	if err.Error() != expectedError.Error() {
+//		t.Errorf("Error message is difference from intended, \nGot:\n%v\nExpect:\n%v\n", err, expectedError)
+//	}
+//}
 
 func TestG304Attack(t *testing.T) {
 	picture := "./attack.jpg"
@@ -160,27 +153,27 @@ func TestG304Attack(t *testing.T) {
 	}
 }
 
-func TestUploadRemoteResource(t *testing.T) {
-	/*
-	   Original image is from one of the wallpapers from PoPOS
-	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
-	*/
-	picture := "http://pm1.narvii.com/7511/262dc66e4d7e3256b1ddbd10bf216a17b85abb69r1-2048-1152v2_00.jpg"
-	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
-		t.Error(err)
-	}
-
-	mc, err := aminogo.UploadMedia(picture)
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = mc.Remote()
-	if err != nil {
-		t.Error(err)
-	}
-
-}
+//func TestUploadRemoteResource(t *testing.T) {
+//	/*
+//	   Original image is from one of the wallpapers from PoPOS
+//	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
+//	*/
+//	picture := "http://pm1.narvii.com/7511/262dc66e4d7e3256b1ddbd10bf216a17b85abb69r1-2048-1152v2_00.jpg"
+//	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
+//		t.Error(err)
+//	}
+//
+//	mc, err := aminogo.UploadMedia(picture)
+//	if err != nil {
+//		t.Error(err)
+//	}
+//
+//	_, err = mc.Remote()
+//	if err != nil {
+//		t.Error(err)
+//	}
+//
+//}
 
 func TestUploadLocalResource(t *testing.T) {
 	picture := "image.jpg"
