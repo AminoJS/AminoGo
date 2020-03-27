@@ -17,7 +17,7 @@ func main() {
 	   Original image is from one of the wallpapers from PoPOS
 	   https://github.com/pop-os/wallpapers/blob/master/original/nick-nazzaro-space-blue.png
 	*/
-	imageSource := "http://pm1.narvii.com/7511/262dc66e4d7e3256b1ddbd10bf216a17b85abb69r1-2048-1152v2_00.jpg"
+	imageSource := "image.jpg"
 
 	mediaContainer, err := aminogo.UploadMedia(imageSource)
 	if err != nil {
@@ -25,7 +25,10 @@ func main() {
 		return
 	}
 
-	media, err := mediaContainer.Remote()
+	media, err := mediaContainer.Local(&aminogo.PathInterface{
+		BaseDirectory: os.Getenv("PWD"),
+		FileName:      "./test/image.jpg",
+	})
 	if err != nil {
 		fmt.Println(err)
 		return
