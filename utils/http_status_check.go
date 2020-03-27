@@ -17,8 +17,6 @@ func formReturnMessage(msg string, res *http.Response) error {
 
 		jStr, _ := ioutil.ReadAll(res.Body)
 
-		fmt.Println(string(jStr))
-
 		if string(jStr) != "" && jStr != nil {
 			err := json.Unmarshal(jStr, body)
 			if err != nil {
