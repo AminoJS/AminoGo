@@ -11,10 +11,10 @@ import (
 )
 
 // Get a detailed chat log from a selected chat room
-func GetChat(communityID int, threadID string) (*structs.GetChat, error) {
+func GetChat(communityID int, threadID string) (*structs.ChatRecords, error) {
 	SID := stores.Get("SID")
 	if SID == nil || SID == "" {
-		return &structs.GetChat{}, errors.New("missing SID in state, try using aminogo.Login() first")
+		return &structs.ChatRecords{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
 	header := req.Header{
@@ -27,17 +27,17 @@ func GetChat(communityID int, threadID string) (*structs.GetChat, error) {
 
 	res, err := req.Get(endpoint, header)
 	if err != nil {
-		return &structs.GetChat{}, err
+		return &structs.ChatRecords{}, err
 	}
 
-	resMap := structs.GetChat{}
+	resMap := structs.ChatRecords{}
 	err = res.ToJSON(&resMap)
 	if err != nil {
-		return &structs.GetChat{}, err
+		return &structs.ChatRecords{}, err
 	}
 	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
-		return &structs.GetChat{}, err
+		return &structs.ChatRecords{}, err
 	}
 
 	return &resMap, err

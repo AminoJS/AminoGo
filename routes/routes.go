@@ -35,3 +35,7 @@ func GetUserBlogsFromCommunity(communityID int, UUID string, start int, size int
 func GetChat(communityID int, threadID string) string {
 	return fmt.Sprintf("%s/api/v1/x%d/s/chat/thread/%s/message", ENDPOINT, communityID, threadID)
 }
+
+func PostBlog(communityID int) string {
+	return fmt.Sprintf("%s/api/v1/v1/x%d/s/blog/", ENDPOINT, communityID)
+}

@@ -279,7 +279,7 @@ type JoinedChatrooms struct {
 	APITimestamp time.Time `json:"api:timestamp"`
 }
 
-type GetUserBlogsFromCommunity struct {
+type BlogsFromCommunity struct {
 	APIStatuscode int    `json:"api:statuscode"`
 	APIDuration   string `json:"api:duration"`
 	APIMessage    string `json:"api:message"`
@@ -346,7 +346,7 @@ type GetUserBlogsFromCommunity struct {
 	APITimestamp time.Time `json:"api:timestamp"`
 }
 
-type GetChat struct {
+type ChatRecords struct {
 	APIStatuscode int    `json:"api:statuscode"`
 	APIDuration   string `json:"api:duration"`
 	APIMessage    string `json:"api:message"`
@@ -382,4 +382,71 @@ type GetChat struct {
 		MediaValue string `json:"mediaValue"`
 	} `json:"messageList"`
 	APITimestamp time.Time `json:"api:timestamp"`
+}
+
+type PostedBlog struct {
+	Blog struct {
+		GlobalVotesCount   int         `json:"globalVotesCount"`
+		GlobalVotedValue   int         `json:"globalVotedValue"`
+		VotedValue         int         `json:"votedValue"`
+		Keywords           string      `json:"keywords"`
+		MediaList          interface{} `json:"mediaList"`
+		Style              int         `json:"style"`
+		TotalQuizPlayCount int         `json:"totalQuizPlayCount"`
+		Title              string      `json:"title"`
+		TipInfo            struct {
+			TipOptionList []struct {
+				Value int    `json:"value"`
+				Icon  string `json:"icon"`
+			} `json:"tipOptionList"`
+			TipMaxCoin      int  `json:"tipMaxCoin"`
+			TippersCount    int  `json:"tippersCount"`
+			Tippable        bool `json:"tippable"`
+			TipMinCoin      int  `json:"tipMinCoin"`
+			TipCustomOption struct {
+				Value interface{} `json:"value"`
+				Icon  string      `json:"icon"`
+			} `json:"tipCustomOption"`
+			TippedCoins int `json:"tippedCoins"`
+		} `json:"tipInfo"`
+		ContentRating         int         `json:"contentRating"`
+		Content               string      `json:"content"`
+		NeedHidden            bool        `json:"needHidden"`
+		GuestVotesCount       int         `json:"guestVotesCount"`
+		Type                  int         `json:"type"`
+		Status                int         `json:"status"`
+		GlobalCommentsCount   int         `json:"globalCommentsCount"`
+		ModifiedTime          time.Time   `json:"modifiedTime"`
+		WidgetDisplayInterval interface{} `json:"widgetDisplayInterval"`
+		TotalPollVoteCount    int         `json:"totalPollVoteCount"`
+		BlogID                string      `json:"blogId"`
+		ViewCount             int         `json:"viewCount"`
+		Language              interface{} `json:"language"`
+		Author                struct {
+			Status                  int    `json:"status"`
+			IsNicknameVerified      bool   `json:"isNicknameVerified"`
+			UID                     string `json:"uid"`
+			Level                   int    `json:"level"`
+			FollowingStatus         int    `json:"followingStatus"`
+			AccountMembershipStatus int    `json:"accountMembershipStatus"`
+			IsGlobal                bool   `json:"isGlobal"`
+			MembershipStatus        int    `json:"membershipStatus"`
+			Reputation              int    `json:"reputation"`
+			Role                    int    `json:"role"`
+			NdcID                   int    `json:"ndcId"`
+			MembersCount            int    `json:"membersCount"`
+			Nickname                string `json:"nickname"`
+			Icon                    string `json:"icon"`
+		} `json:"author"`
+		Extensions    interface{} `json:"extensions"`
+		VotesCount    int         `json:"votesCount"`
+		NdcID         int         `json:"ndcId"`
+		CreatedTime   time.Time   `json:"createdTime"`
+		EndTime       interface{} `json:"endTime"`
+		CommentsCount int         `json:"commentsCount"`
+	} `json:"blog"`
+	APIStatuscode int       `json:"api:statuscode"`
+	APIDuration   string    `json:"api:duration"`
+	APIMessage    string    `json:"api:message"`
+	APITimestamp  time.Time `json:"api:timestamp"`
 }

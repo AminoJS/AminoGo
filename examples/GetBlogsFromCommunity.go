@@ -43,5 +43,5 @@ func main() {
 		return
 	}
 
-	fmt.Printf("First Blog Title: %s", myBlogs.BlogList[0].Title)
+	fmt.Printf("First Blog Title: %s\nContent: %s\n", myBlogs.BlogList[0].Title, myBlogs.BlogList[0].MediaList)
 }

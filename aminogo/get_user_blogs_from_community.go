@@ -18,14 +18,14 @@ type GetUserBlogFromComOptions struct {
 }
 
 // Get a list of blogs that are written from a selected users from a selected community
-func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *structs.GetUserBlogsFromCommunity, err error) {
+func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *structs.BlogsFromCommunity, err error) {
 	SID := stores.Get("SID")
 	if SID == nil {
-		return &structs.GetUserBlogsFromCommunity{}, errors.New("missing SID in state, try using aminogo.Login() first")
+		return &structs.BlogsFromCommunity{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
 	if argument.CommunityID == 0 {
-		return &structs.GetUserBlogsFromCommunity{}, errors.New("CommunityID cannot be 0 or empty")
+		return &structs.BlogsFromCommunity{}, errors.New("CommunityID cannot be 0 or empty")
 	}
 
 	endpoint := routes.GetUserBlogsFromCommunity(argument.CommunityID, argument.UUID, argument.Start, argument.Size)
@@ -38,17 +38,17 @@ func GetUserBlogsFromCommunity(argument *GetUserBlogFromComOptions) (blogsFeed *
 
 	res, err := req.Get(endpoint, header)
 	if err != nil {
-		return &structs.GetUserBlogsFromCommunity{}, err
+		return &structs.BlogsFromCommunity{}, err
 	}
 	err = utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
-		return &structs.GetUserBlogsFromCommunity{}, err
+		return &structs.BlogsFromCommunity{}, err
 	}
 
-	resMap := structs.GetUserBlogsFromCommunity{}
+	resMap := structs.BlogsFromCommunity{}
 	err = res.ToJSON(&resMap)
 	if err != nil {
-		return &structs.GetUserBlogsFromCommunity{}, err
+		return &structs.BlogsFromCommunity{}, err
 	}
 
 	return &resMap, nil

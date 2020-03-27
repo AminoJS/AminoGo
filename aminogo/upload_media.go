@@ -8,6 +8,7 @@ import (
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"os"
@@ -17,13 +18,32 @@ import (
 	"strings"
 )
 
-type mediaContainer struct {
+var letterRunes = []rune("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randStringRunes(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
+}
+
+// A container that store a upload/pre-upload media data
+type MediaContainer struct {
 	// The URL of the tagged source
 	des string
 	// Flag for IDing the source file whether it is a local file or a remote one
 	isRemoteResource bool
 
 	uploadContent interface{}
+
+	FinalDes string
+
+	// Amino data
+
+	Captions interface{}
+
+	referenceKey string
 }
 
 func isValidUrl(toTest string) bool {
@@ -52,18 +72,18 @@ func getLocalFileContent(filePath string) (file interface{}, err error) {
 }
 
 // Create new MediaContainer
-func UploadMedia(url string) (*mediaContainer, error) {
+func UploadMedia(url string) (*MediaContainer, error) {
 
 	SID := stores.Get("SID")
 	if SID == nil {
-		return &mediaContainer{}, errors.New("missing SID in state, try using aminogo.Login() first")
+		return &MediaContainer{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
 	if url == "" {
 		return nil, errors.New("argument URL must not be empty")
 	}
 
-	mc := mediaContainer{
+	mc := MediaContainer{
 		des:              url,
 		isRemoteResource: false,
 	}
@@ -71,7 +91,7 @@ func UploadMedia(url string) (*mediaContainer, error) {
 }
 
 // Upload a remote resource or a local binary file
-func (mc *mediaContainer) Remote() (*structs.UploadedMedia, error) {
+func (mc *MediaContainer) Remote() (*structs.UploadedMedia, error) {
 
 	if isValidUrl(mc.des) == false {
 		return &structs.UploadedMedia{}, errors.New("invalid URL")
@@ -95,7 +115,7 @@ type PathInterface struct {
 }
 
 // Upload a local resource or a local binary file
-func (mc *mediaContainer) Local(pathArg *PathInterface) (*structs.UploadedMedia, error) {
+func (mc *MediaContainer) Local(pathArg *PathInterface) (*structs.UploadedMedia, error) {
 
 	// Format the a valid path
 
@@ -155,7 +175,13 @@ References:
 	return media, nil
 }
 
-func streamToServer(mc *mediaContainer, doneUploading chan bool) (media *structs.UploadedMedia, err error) {
+func (mc *MediaContainer) GenerateReferenceKey() string {
+	refKey := randStringRunes(4)
+	mc.referenceKey = refKey
+	return refKey
+}
+
+func streamToServer(mc *MediaContainer, doneUploading chan bool) (media *structs.UploadedMedia, err error) {
 
 	SID := stores.Get("SID")
 	if SID == nil || SID == "" {
@@ -190,10 +216,12 @@ func streamToServer(mc *mediaContainer, doneUploading chan bool) (media *structs
 		return &structs.UploadedMedia{}, err
 	}
 
+	mc.FinalDes = resMap.MediaValue
+
 	return resMap, nil
 }
 
-func uploadLocalFile(mc *mediaContainer) error {
+func uploadLocalFile(mc *MediaContainer) error {
 	// Handle local content
 
 	utils.DebugLog("upload_media.go", "Grepping LOCAL resource")
@@ -231,7 +259,7 @@ func uploadLocalFile(mc *mediaContainer) error {
 	return nil
 }
 
-func uploadRemoteFile(mc *mediaContainer) (error, chan bool) {
+func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 	doneUploading := make(chan bool)
 
 	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
