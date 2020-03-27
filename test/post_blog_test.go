@@ -88,7 +88,7 @@ func TestPostBlogWithCaptionAndInsertedImage(t *testing.T) {
 
 	_, err = mc.Local(&aminogo.PathInterface{
 		BaseDirectory: os.Getenv("PWD"),
-		FileName:      fmt.Sprintf("./test/%s", picture),
+		FileName:      picture,
 	})
 	if err != nil {
 		t.Error(err)

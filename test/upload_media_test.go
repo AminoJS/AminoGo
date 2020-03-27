@@ -33,7 +33,7 @@ func TestZeroByteFile(t *testing.T) {
 	}
 	_, err = mc.Local(&aminogo.PathInterface{
 		BaseDirectory: os.Getenv("PWD"),
-		FileName:      fmt.Sprintf("./test/%s", mockFileDes),
+		FileName:      mockFileDes,
 	})
 	if err == nil {
 		removeMockFiles(mockFileDes)
@@ -71,7 +71,7 @@ func TestFileTooLarge(t *testing.T) {
 
 	_, err = mc.Local(&aminogo.PathInterface{
 		BaseDirectory: os.Getenv("PWD"),
-		FileName:      fmt.Sprintf("./test/%s", mockFileDes),
+		FileName:      mockFileDes,
 	})
 	if err == nil {
 		t.Error("There should be an error since this test case is uploading a 6MB+ file, this action is be not allowed in this library")
@@ -188,7 +188,7 @@ func TestUploadLocalResource(t *testing.T) {
 
 	media, err := mc.Local(&aminogo.PathInterface{
 		BaseDirectory: os.Getenv("PWD"),
-		FileName:      fmt.Sprintf("./test/%s", picture),
+		FileName:      picture,
 	})
 	if err != nil {
 		t.Error(err)
