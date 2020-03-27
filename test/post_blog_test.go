@@ -94,12 +94,12 @@ func TestPostBlogWithCaptionAndInsertedImage(t *testing.T) {
 		t.Error(err)
 	}
 
-	mc.Captions = "This Is Reggie OwO"
+	mc.Captions = "Nick Nazzaro Space Blue"
 	refKey := mc.GenerateReferenceKey()
 
 	var mediaList = []*aminogo.MediaContainer{mc}
 
-	blog, err := aminogo.PostBlog(myCom.CommunityList[0].NdcID, title, fmt.Sprintf("This is a picture\n%s\nAnd that is Reggie The Mouse", refKey), &mediaList)
+	blog, err := aminogo.PostBlog(myCom.CommunityList[0].NdcID, title, fmt.Sprintf("This is a picture\n%s\nOf A Wonder Wallpaoer From PoPOS", refKey), &mediaList)
 	if err != nil {
 		t.Error(err)
 	}
