@@ -91,23 +91,23 @@ func UploadMedia(url string) (*MediaContainer, error) {
 }
 
 // Upload a remote resource or a local binary file
-func (mc *MediaContainer) Remote() (*structs.UploadedMedia, error) {
-
-	if isValidUrl(mc.des) == false {
-		return &structs.UploadedMedia{}, errors.New("invalid URL")
-	}
-
-	mc.isRemoteResource = true
-	err, doneUploading := uploadRemoteFile(mc)
-	if err != nil {
-		return &structs.UploadedMedia{}, err
-	}
-	media, err := streamToServer(mc, doneUploading)
-	if err != nil {
-		return &structs.UploadedMedia{}, err
-	}
-	return media, nil
-}
+//func (mc *MediaContainer) Remote() (*structs.UploadedMedia, error) {
+//
+//    if isValidUrl(mc.des) == false {
+//        return &structs.UploadedMedia{}, errors.New("invalid URL")
+//    }
+//
+//    mc.isRemoteResource = true
+//    err, doneUploading := uploadRemoteFile(mc)
+//    if err != nil {
+//        return &structs.UploadedMedia{}, err
+//    }
+//    media, err := streamToServer(mc, doneUploading)
+//    if err != nil {
+//        return &structs.UploadedMedia{}, err
+//    }
+//    return media, nil
+//}
 
 type PathInterface struct {
 	BaseDirectory string
@@ -164,6 +164,7 @@ References:
 	}
 
 	mc.isRemoteResource = false
+	mc.des = fileLocation
 	err := uploadLocalFile(mc)
 	if err != nil {
 		return &structs.UploadedMedia{}, err
@@ -300,7 +301,7 @@ func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
 
 	go func() {
 		<-doneUploading
-		defer desRes.Response().Body.Close()
+		desRes.Response().Body.Close()
 		close(doneUploading)
 	}()
 
