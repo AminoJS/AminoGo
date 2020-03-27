@@ -32,5 +32,5 @@ func main() {
 		return
 	}
 	chatroom := chatrooms.ThreadList[0]
-	fmt.Printf("Chatroom Title: %s\nFrom Community: %s\nID: %d\n", chatroom.Title, yourFirstCommunity.CommunityList[0].Name, chatroom.ThreadID)
+	fmt.Printf("Chatroom Title: %s\nFrom Community: %s\nID: %s\n", chatroom.Title, yourFirstCommunity.CommunityList[0].Name, chatroom.ThreadID)
 }
