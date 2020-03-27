@@ -37,5 +37,5 @@ func GetChat(communityID int, threadID string) string {
 }
 
 func PostBlog(communityID int) string {
-	return fmt.Sprintf("%s/api/v1/v1/x%d/s/blog/", ENDPOINT, communityID)
+	return fmt.Sprintf("%s/api/v1/x%d/s/blog/", ENDPOINT, communityID)
 }
