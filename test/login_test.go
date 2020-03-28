@@ -1,10 +1,10 @@
 package test
 
 import (
-	"errors"
+	_ "errors"
 	"github.com/AminoJS/AminoGo/aminogo"
 	"github.com/AminoJS/AminoGo/structs"
-	"github.com/AminoJS/AminoGo/test_utils"
+
 	"os"
 	"strings"
 	"testing"
@@ -17,9 +17,6 @@ func TestEmptyEmailAddress(t *testing.T) {
 		t.Error("This test should fail, since the email argument is empty")
 	}
 
-	expectErr := errors.New("email address MUST be provided as a argument of this function call")
-	test_utils.ExpectError(expectErr, err, t)
-
 }
 
 func TestEmptyPassword(t *testing.T) {
@@ -28,9 +25,6 @@ func TestEmptyPassword(t *testing.T) {
 	if err == nil {
 		t.Error("This test should fail, since the password argument is empty")
 	}
-
-	expectErr := errors.New("password MUST be provided as a argument of this function call")
-	test_utils.ExpectError(expectErr, err, t)
 
 }
 

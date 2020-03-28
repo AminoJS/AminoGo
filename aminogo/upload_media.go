@@ -13,7 +13,6 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -263,47 +262,47 @@ func uploadLocalFile(mc *MediaContainer) error {
 	return nil
 }
 
-func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
-	doneUploading := make(chan bool)
-
-	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
-
-	req.SetTimeout(5 * time.Minute)
-	desRes, err := req.Get(mc.des)
-	if err != nil {
-		return err, doneUploading
-	}
-	if desRes.Response().StatusCode > 299 {
-		// Something fishy going on
-		return errors.New(fmt.Sprintf("error while trying to capture a remote resources, but ended up with a HTTP status code of: %d", desRes.Response().StatusCode)), doneUploading
-	}
-
-	var MaxFileSize = 6000000
-
-	// Check if a selected file are larger then 6MB
-	clHeader := desRes.Response().Header.Get("Content-Length")
-	clHeaderInt, err := strconv.Atoi(clHeader)
-	if err != nil {
-		return err, doneUploading
-	}
-	if clHeaderInt > MaxFileSize {
-		return errors.New("file too large, Amino doesn't allow file size that are larger then 6MB"), doneUploading
-	}
-
-	// Check if file are 0 bytes
-	if clHeaderInt == 0 {
-		return errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server"), doneUploading
-	}
-
-	utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
-
-	mc.uploadContent = desRes.Request().Body
-
-	go func() {
-		<-doneUploading
-		defer desRes.Response().Body.Close()
-		close(doneUploading)
-	}()
-
-	return nil, doneUploading
-}
+//func uploadRemoteFile(mc *MediaContainer) (error, chan bool) {
+//	doneUploading := make(chan bool)
+//
+//	utils.DebugLog("upload_media.go", "Grepping REMOTE resource")
+//
+//	req.SetTimeout(5 * time.Minute)
+//	desRes, err := req.Get(mc.des)
+//	if err != nil {
+//		return err, doneUploading
+//	}
+//	if desRes.Response().StatusCode > 299 {
+//		// Something fishy going on
+//		return errors.New(fmt.Sprintf("error while trying to capture a remote resources, but ended up with a HTTP status code of: %d", desRes.Response().StatusCode)), doneUploading
+//	}
+//
+//	var MaxFileSize = 6000000
+//
+//	// Check if a selected file are larger then 6MB
+//	clHeader := desRes.Response().Header.Get("Content-Length")
+//	clHeaderInt, err := strconv.Atoi(clHeader)
+//	if err != nil {
+//		return err, doneUploading
+//	}
+//	if clHeaderInt > MaxFileSize {
+//		return errors.New("file too large, Amino doesn't allow file size that are larger then 6MB"), doneUploading
+//	}
+//
+//	// Check if file are 0 bytes
+//	if clHeaderInt == 0 {
+//		return errors.New("0 byte or completely empty file are not allowed to be transfer to the API's server"), doneUploading
+//	}
+//
+//	utils.DebugLog("upload_media.go", "Done grepping REMOTE resource")
+//
+//	mc.uploadContent = desRes.Request().Body
+//
+//	go func() {
+//		<-doneUploading
+//		defer desRes.Response().Body.Close()
+//		close(doneUploading)
+//	}()
+//
+//	return nil, doneUploading
+//}

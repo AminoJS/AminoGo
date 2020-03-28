@@ -1,9 +1,7 @@
 package test
 
 import (
-	"errors"
 	"github.com/AminoJS/AminoGo/aminogo"
-	"github.com/AminoJS/AminoGo/test_utils"
 	"os"
 	"testing"
 )
@@ -22,7 +20,6 @@ func TestInvalidCommunityID(t *testing.T) {
 	if err == nil {
 		t.Error("There should be an error since the CommunityID is invalid")
 	}
-	test_utils.ExpectError(errors.New("CommunityID cannot be 0 or empty"), err, t)
 }
 func TestGetUserBlogsFromCommunity(t *testing.T) {
 	if err := aminogo.Login(os.Getenv("AMINO_USERNAME"), os.Getenv("AMINO_PASSWORD")); err != nil {
