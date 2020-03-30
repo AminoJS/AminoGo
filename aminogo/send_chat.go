@@ -17,6 +17,17 @@ func SendChat(CommunityID int, ThreadID string, Message string) (*structs.SentCh
 		return &structs.SentChat{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
+	if CommunityID == 0 {
+		return &structs.SentChat{}, errors.New("argument CommunityID cannot be empty")
+	}
+
+	if ThreadID == "" {
+		return &structs.SentChat{}, errors.New("argument ThreadID cannot be empty")
+	}
+
+	if Message == "" {
+		return &structs.SentChat{}, errors.New("argument Message cannot be empty")
+	}
 	endpoint := routes.SendChat(CommunityID, ThreadID)
 
 	utils.DebugLog("get_blog_feed.go", fmt.Sprintf("URL: %s", endpoint))
