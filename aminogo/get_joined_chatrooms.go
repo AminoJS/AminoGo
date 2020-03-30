@@ -2,13 +2,10 @@ package aminogo
 
 import (
 	"errors"
-	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
-	"github.com/imroc/req"
-	"time"
 )
 
 type GetJoinedChatroomsOptions struct {
@@ -24,16 +21,9 @@ func GetJoinedChatrooms(argument *GetJoinedChatroomsOptions) (joinedChatrooms *s
 		return &structs.JoinedChatrooms{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
-	header := req.Header{
-		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
-	}
-
 	endpoint := routes.GetJoinedChatrooms(argument.CommunityID, argument.Start, argument.Size)
 
-	utils.DebugLog("get_joined_chatrooms.go", fmt.Sprintf("URL: %s", endpoint))
-
-	req.SetTimeout(30 * time.Second)
-	res, err := req.Get(endpoint, header)
+	res, err := utils.Get(endpoint)
 	if err != nil {
 		return &structs.JoinedChatrooms{}, err
 	}

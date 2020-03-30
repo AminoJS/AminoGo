@@ -2,13 +2,10 @@ package aminogo
 
 import (
 	"errors"
-	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
-	"github.com/imroc/req"
-	"time"
 )
 
 // Return a complete REST respond as a struct, all the info are contain inside the "Account" field
@@ -19,16 +16,9 @@ func MyProfile() (profile *structs.MyProfile, err error) {
 		return &structs.MyProfile{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 
-	header := req.Header{
-		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
-	}
-
 	endpoint := routes.MyProfile()
 
-	utils.DebugLog("get_my_profile.go", fmt.Sprintf("URL: %s", endpoint))
-
-	req.SetTimeout(30 * time.Second)
-	res, err := req.Get(endpoint, header)
+	res, err := utils.Get(endpoint)
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}

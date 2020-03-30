@@ -7,8 +7,6 @@ import (
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
-	"github.com/imroc/req"
-	"time"
 )
 
 // Get a list of blogs from a targeted community
@@ -22,12 +20,7 @@ func GetBlogFeed(communityID int, start int, size int) (blogsFeed *structs.Commu
 
 	utils.DebugLog("get_blog_feed.go", fmt.Sprintf("URL: %s", endpoint))
 
-	header := req.Header{
-		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
-	}
-
-	req.SetTimeout(30 * time.Second)
-	res, err := req.Get(endpoint, header)
+	res, err := utils.Get(endpoint)
 	if err != nil {
 		return &structs.CommunityBlogsFeed{}, err
 	}
