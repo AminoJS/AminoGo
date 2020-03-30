@@ -450,3 +450,37 @@ type PostedBlog struct {
 	APIMessage    string    `json:"api:message"`
 	APITimestamp  time.Time `json:"api:timestamp"`
 }
+
+type SentChat struct {
+	APIStatuscode int `json:"api:statuscode"`
+	Message       struct {
+		IncludedInSummary bool   `json:"includedInSummary"`
+		UID               string `json:"uid"`
+		Author            struct {
+			Status                  int         `json:"status"`
+			IsNicknameVerified      bool        `json:"isNicknameVerified"`
+			UID                     string      `json:"uid"`
+			Level                   int         `json:"level"`
+			AccountMembershipStatus int         `json:"accountMembershipStatus"`
+			MembershipStatus        interface{} `json:"membershipStatus"`
+			Reputation              int         `json:"reputation"`
+			Role                    int         `json:"role"`
+			Nickname                string      `json:"nickname"`
+			Icon                    string      `json:"icon"`
+		} `json:"author"`
+		IsHidden    bool      `json:"isHidden"`
+		MessageID   string    `json:"messageId"`
+		MediaType   int       `json:"mediaType"`
+		Content     string    `json:"content"`
+		ClientRefID int       `json:"clientRefId"`
+		ThreadID    string    `json:"threadId"`
+		CreatedTime time.Time `json:"createdTime"`
+		Extensions  struct {
+		} `json:"extensions"`
+		Type       int         `json:"type"`
+		MediaValue interface{} `json:"mediaValue"`
+	} `json:"message"`
+	APIMessage   string    `json:"api:message"`
+	APIDuration  string    `json:"api:duration"`
+	APITimestamp time.Time `json:"api:timestamp"`
+}
