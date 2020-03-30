@@ -208,20 +208,13 @@ func streamToServer(mc *MediaContainer, doneUploading chan bool) (media *structs
 		doneUploading <- true
 	}
 
-	err = utils.ThrowHttpErrorIfFail(res.Response())
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.UploadedMedia{}, err
 	}
-
-	resMap := &structs.UploadedMedia{}
-	err = res.ToJSON(&resMap)
-	if err != nil {
-		return &structs.UploadedMedia{}, err
-	}
-
-	mc.FinalDes = resMap.MediaValue
-
-	return resMap, nil
+	tmp := resMap.(structs.UploadedMedia)
+	mc.FinalDes = tmp.MediaValue
+	return &tmp, nil
 }
 
 func uploadLocalFile(mc *MediaContainer) error {

@@ -2,6 +2,7 @@ package aminogo
 
 import (
 	"errors"
+	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/structs"
@@ -23,15 +24,11 @@ func MyProfile() (profile *structs.MyProfile, err error) {
 		return &structs.MyProfile{}, err
 	}
 
-	resMap := structs.MyProfile{}
-	err = res.ToJSON(&resMap)
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.MyProfile{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
-	if err != nil {
-		return &structs.MyProfile{}, err
-	}
-
-	return &resMap, nil
+	tmp := resMap.(structs.MyProfile)
+	fmt.Printf("Hello")
+	return &tmp, nil
 }

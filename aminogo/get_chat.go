@@ -22,16 +22,11 @@ func GetChat(communityID int, threadID string) (*structs.ChatRecords, error) {
 		return &structs.ChatRecords{}, err
 	}
 
-	resMap := structs.ChatRecords{}
-	err = res.ToJSON(&resMap)
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.ChatRecords{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
-	if err != nil {
-		return &structs.ChatRecords{}, err
-	}
-
-	return &resMap, err
+	tmp := resMap.(structs.ChatRecords)
+	return &tmp, err
 
 }

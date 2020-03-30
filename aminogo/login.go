@@ -1,16 +1,12 @@
 package aminogo
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/AminoJS/AminoGo/routes"
 	"github.com/AminoJS/AminoGo/stores"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
-	"io/ioutil"
-	"net/http"
 	"time"
 )
 
@@ -42,33 +38,19 @@ func Login(email string, password string) error {
 	postAuthBody["action"] = action
 	postAuthBody["timestamp"] = time.Now().Unix()
 	postAuthBody["version"] = 2
-	jStr, _ := json.Marshal(postAuthBody)
-	data := bytes.NewReader(jStr)
 
 	req.SetTimeout(30 * time.Second)
-	res, err := http.Post(routes.Login(), "application/json", data)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-
-	body, err := ioutil.ReadAll(res.Body)
+	res, err := utils.PostJSON(routes.Login(), postAuthBody)
 	if err != nil {
 		return err
 	}
 
-	var bodyMap map[string]interface{}
-	err = json.Unmarshal(body, &bodyMap)
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return err
 	}
 
-	err = utils.ThrowHttpErrorIfFail(res)
-	if err != nil {
-		return err
-	}
-
-	SID := bodyMap["sid"].(string)
+	SID := resMap.(map[string]interface{})["sid"].(string)
 	stores.Set("SID", SID)
 
 	utils.DebugLog("login.go", fmt.Sprintf("SID %s", SID))

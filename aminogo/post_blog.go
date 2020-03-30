@@ -73,17 +73,12 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 	if err != nil {
 		return &structs.PostedBlog{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
+
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.PostedBlog{}, err
 	}
-
-	resMap := structs.PostedBlog{}
-	err = res.ToJSON(&resMap)
-	if err != nil {
-		return &structs.PostedBlog{}, err
-	}
-
-	return &resMap, nil
+	tmp := resMap.(structs.PostedBlog)
+	return &tmp, nil
 
 }

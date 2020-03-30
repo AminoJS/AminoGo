@@ -43,16 +43,11 @@ func SendChat(CommunityID int, ThreadID string, Message string) (*structs.SentCh
 	if err != nil {
 		return &structs.SentChat{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
+
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.SentChat{}, err
 	}
-
-	resMap := structs.SentChat{}
-	err = res.ToJSON(&resMap)
-	if err != nil {
-		return &structs.SentChat{}, err
-	}
-
-	return &resMap, nil
+	tmp := resMap.(structs.SentChat)
+	return &tmp, nil
 }

@@ -28,18 +28,11 @@ func GetJoinedChatrooms(argument *GetJoinedChatroomsOptions) (joinedChatrooms *s
 		return &structs.JoinedChatrooms{}, err
 	}
 
-	//fmt.Println(res.ToString())
-
-	resMap := structs.JoinedChatrooms{}
-	err = res.ToJSON(&resMap)
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.JoinedChatrooms{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
-	if err != nil {
-		return &structs.JoinedChatrooms{}, err
-	}
-
-	return &resMap, nil
+	tmp := resMap.(structs.JoinedChatrooms)
+	return &tmp, nil
 
 }

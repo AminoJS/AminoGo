@@ -30,12 +30,13 @@ func PostJSON(url string, data interface{}) (*req.Resp, error) {
 		return &req.Resp{}, errors.New("URL cannot be emtpy")
 	}
 	SID := stores.Get("SID")
-	if SID == nil || SID == "" {
-		return &req.Resp{}, errors.New("missing SID in state, try using aminogo.Login() first")
-	}
-	header := req.Header{
-		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
-		//"Content-Type": "application/json",
+
+	header := req.Header{}
+
+	if SID != "" {
+		header = req.Header{
+			"NDCAUTH": fmt.Sprintf("sid=%s", SID),
+		}
 	}
 
 	req.SetTimeout(30 * time.Second)

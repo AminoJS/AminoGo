@@ -30,16 +30,11 @@ func GetJoinedCommunities(argument *GetJoinedCommunitiesOptions) (joinedCommunit
 		return &structs.JoinedCommunities{}, err
 	}
 
-	resMap := structs.JoinedCommunities{}
-	err = res.ToJSON(&resMap)
+	resMap, err := utils.ThrowHttpErrorIfFail(res.Response())
 	if err != nil {
 		return &structs.JoinedCommunities{}, err
 	}
-	err = utils.ThrowHttpErrorIfFail(res.Response())
-	if err != nil {
-		return &structs.JoinedCommunities{}, err
-	}
-
-	return &resMap, nil
+	tmp := resMap.(structs.JoinedCommunities)
+	return &tmp, nil
 
 }
