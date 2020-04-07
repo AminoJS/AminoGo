@@ -43,3 +43,7 @@ func PostBlog(communityID int) string {
 func SendChat(communityID int, ThredID string) string {
 	return fmt.Sprintf("%s/api/v1/x%d/s/chat/thread/%s/message", ENDPOINT, communityID, ThredID)
 }
+
+func CommentingOnPost(communityID int, PostID string) string {
+	return fmt.Sprintf("%s/api/v1/x%d/s/blog/%s/comment", ENDPOINT, communityID, PostID)
+}
