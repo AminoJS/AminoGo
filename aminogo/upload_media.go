@@ -234,10 +234,6 @@ func uploadLocalFile(mc *MediaContainer) error {
 	if err != nil {
 		return err
 	}
-	err = localFile.Close()
-	if err != nil {
-		return err
-	}
 
 	fileInfo, err := localFile.Stat()
 	if err != nil {
@@ -261,7 +257,12 @@ func uploadLocalFile(mc *MediaContainer) error {
 		return err
 	}
 	mc.uploadContent = file
-	utils.DebugLog("upload_media.go", "Done grepping LOCAL resource")
+
+	err = localFile.Close()
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
