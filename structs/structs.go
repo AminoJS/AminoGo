@@ -484,3 +484,47 @@ type SentChat struct {
 	APIDuration  string    `json:"api:duration"`
 	APITimestamp time.Time `json:"api:timestamp"`
 }
+
+type CreatedWikiEntry struct {
+	Item struct {
+		ItemID              string    `json:"itemId"`
+		Status              int       `json:"status"`
+		Style               int       `json:"style"`
+		GlobalCommentsCount int       `json:"globalCommentsCount"`
+		ModifiedTime        time.Time `json:"modifiedTime"`
+		VotedValue          int       `json:"votedValue"`
+		GlobalVotesCount    int       `json:"globalVotesCount"`
+		GlobalVotedValue    int       `json:"globalVotedValue"`
+		Author              struct {
+			Status                  int    `json:"status"`
+			IsNicknameVerified      bool   `json:"isNicknameVerified"`
+			UID                     string `json:"uid"`
+			Level                   int    `json:"level"`
+			FollowingStatus         int    `json:"followingStatus"`
+			AccountMembershipStatus int    `json:"accountMembershipStatus"`
+			IsGlobal                bool   `json:"isGlobal"`
+			MembershipStatus        int    `json:"membershipStatus"`
+			Reputation              int    `json:"reputation"`
+			Role                    int    `json:"role"`
+			NdcID                   int    `json:"ndcId"`
+			MembersCount            int    `json:"membersCount"`
+			Nickname                string `json:"nickname"`
+			Icon                    string `json:"icon"`
+		} `json:"author"`
+		ContentRating   int         `json:"contentRating"`
+		Label           string      `json:"label"`
+		Content         string      `json:"content"`
+		Keywords        interface{} `json:"keywords"`
+		NeedHidden      bool        `json:"needHidden"`
+		GuestVotesCount int         `json:"guestVotesCount"`
+		Extensions      interface{} `json:"extensions"`
+		VotesCount      int         `json:"votesCount"`
+		CreatedTime     time.Time   `json:"createdTime"`
+		MediaList       interface{} `json:"mediaList"`
+		CommentsCount   int         `json:"commentsCount"`
+	} `json:"item"`
+	APIDuration   string    `json:"api:duration"`
+	APITimestamp  time.Time `json:"api:timestamp"`
+	APIMessage    string    `json:"api:message"`
+	APIStatuscode int       `json:"api:statuscode"`
+}
