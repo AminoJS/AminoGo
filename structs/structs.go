@@ -485,6 +485,46 @@ type SentChat struct {
 	APITimestamp time.Time `json:"api:timestamp"`
 }
 
+type PostedComment struct {
+	Comment struct {
+		ModifiedTime time.Time   `json:"modifiedTime"`
+		NdcID        int         `json:"ndcId"`
+		VotedValue   int         `json:"votedValue"`
+		ParentType   int         `json:"parentType"`
+		CommentID    string      `json:"commentId"`
+		ParentNdcID  int         `json:"parentNdcId"`
+		MediaList    interface{} `json:"mediaList"`
+		VotesSum     int         `json:"votesSum"`
+		Author       struct {
+			Status                  int    `json:"status"`
+			IsNicknameVerified      bool   `json:"isNicknameVerified"`
+			UID                     string `json:"uid"`
+			Level                   int    `json:"level"`
+			FollowingStatus         int    `json:"followingStatus"`
+			AccountMembershipStatus int    `json:"accountMembershipStatus"`
+			IsGlobal                bool   `json:"isGlobal"`
+			MembershipStatus        int    `json:"membershipStatus"`
+			Reputation              int    `json:"reputation"`
+			Role                    int    `json:"role"`
+			NdcID                   int    `json:"ndcId"`
+			MembersCount            int    `json:"membersCount"`
+			Nickname                string `json:"nickname"`
+			Icon                    string `json:"icon"`
+		} `json:"author"`
+		Content    string `json:"content"`
+		Extensions struct {
+		} `json:"extensions"`
+		ParentID         string    `json:"parentId"`
+		CreatedTime      time.Time `json:"createdTime"`
+		SubcommentsCount int       `json:"subcommentsCount"`
+		Type             int       `json:"type"`
+	} `json:"comment"`
+	APIStatuscode int       `json:"api:statuscode"`
+	APIDuration   string    `json:"api:duration"`
+	APIMessage    string    `json:"api:message"`
+	APITimestamp  time.Time `json:"api:timestamp"`
+}
+
 type CreatedWikiEntry struct {
 	Item struct {
 		ItemID              string    `json:"itemId"`

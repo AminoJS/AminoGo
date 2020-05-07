@@ -26,4 +26,5 @@ func TestGetJoinedCommunities(t *testing.T) {
 	if len(communities.BlogList) <= 0 {
 		t.Error("Length of communities list shouldn't result in less then or equal 0 since this test Amino has joined one and more communities")
 	}
+	t.Log(communities.BlogList[0].NdcID)
 }
