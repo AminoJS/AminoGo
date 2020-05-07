@@ -234,7 +234,10 @@ func uploadLocalFile(mc *MediaContainer) error {
 	if err != nil {
 		return err
 	}
-	defer localFile.Close()
+	err = localFile.Close()
+	if err != nil {
+		return err
+	}
 
 	fileInfo, err := localFile.Stat()
 	if err != nil {
