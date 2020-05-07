@@ -34,8 +34,8 @@ func PostJSON(url string, data interface{}) (*req.Resp, error) {
 		return &req.Resp{}, errors.New("missing SID in state, try using aminogo.Login() first")
 	}
 	header := req.Header{
-		"NDCAUTH": fmt.Sprintf("sid=%s", SID),
-		//"Content-Type": "application/json",
+		"NDCAUTH":      fmt.Sprintf("sid=%s", SID),
+		"Content-Type": "application/json",
 	}
 
 	req.SetTimeout(30 * time.Second)
