@@ -8,7 +8,6 @@ import (
 	"github.com/AminoJS/AminoGo/structs"
 	"github.com/AminoJS/AminoGo/utils"
 	"github.com/imroc/req"
-	"strings"
 	"time"
 )
 
@@ -46,26 +45,21 @@ func PostBlog(communityID int, title string, content string, mediaList *[]*Media
 	data["eventSource"] = "eventSource"
 	data["timestamp"] = time.Now().Unix()
 
-	// Replace reference key
-	var postMediaList []interface{}
-
 	if len(*mediaList) >= 1 {
+		var tmp []*utils.Media
 		for _, media := range *mediaList {
-			var image [4]interface{}
-
-			image[0] = 100
-			image[1] = media.FinalDes
-			if media.Captions != "" {
-				image[2] = media.Captions
+			var img = utils.Media{
+				URL:          media.FinalDes,
+				Caption:      media.Captions,
+				ReferenceKey: media.referenceKey,
 			}
-			if media.referenceKey != "" {
-				data["content"] = strings.ReplaceAll(content, media.referenceKey, fmt.Sprintf("[IMG=%s]", media.referenceKey))
-				image[3] = media.referenceKey
-			}
-			postMediaList = append(postMediaList, image)
+			tmp = append(tmp, &img)
 		}
-
-		data["mediaList"] = postMediaList
+		mediaList, newContext := utils.CreateMediaList(tmp, content)
+		if *newContext != "" {
+			data["content"] = *newContext
+		}
+		data["mediaList"] = *mediaList
 	}
 
 	req.SetTimeout(30 * time.Second)
